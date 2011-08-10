@@ -19,13 +19,22 @@ urlpatterns = patterns('django.views.generic.date_based',
         'extra_context' : common_data
         }),
         
-    (r'^arsiv/(?P<year>\d{4})/','archive_year',{
+    (r'^arsiv/(?P<year>\d{4})/$','archive_year',{
             'template_name' : 'blog/yillar.html',
             'date_field' : 'pub_date',
             'queryset' : Post.objects.filter(yayinlandi=True),
             'extra_context' : common_data,
             'make_object_list' : True,
             'template_object_name' : 'makale'
+    }),
+    
+    (r'^arsiv/(?P<year>\d{4})/(?P<month>\d{1,2})','archive_month',{
+            'template_name' : 'blog/ay.html',
+            'date_field' : 'pub_date',
+            'queryset' : Post.objects.filter(yayinlandi=True),
+            'extra_context' : common_data,
+            'template_object_name' : 'makale',
+            'month_format' : "%m",
     }),
 )
 urlpatterns += patterns('portal.blog.views',
