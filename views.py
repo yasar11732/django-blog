@@ -21,15 +21,6 @@ else:
 common_data = {'slogan': blog_slogan,
      'blog_name' :  blog_baslik,
          }
-def home(request):
-    global common_data
-    latest_posts = Post.objects.filter(yayinlandi=True).order_by('-pub_date')[:10]
-    datas = {'latest_posts': latest_posts,
-                 'rss_link': "/rss/" 
-        
-    }
-    datas.update(common_data)
-    return render_to_response('blog/index.html',datas)
 def post(request,slug):
     global common_data
     p = get_object_or_404(Post, slug=slug)

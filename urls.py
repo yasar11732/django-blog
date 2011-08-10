@@ -28,7 +28,7 @@ urlpatterns = patterns('django.views.generic.date_based',
             'template_object_name' : 'makale'
     }),
     
-    (r'^arsiv/(?P<year>\d{4})/(?P<month>\d{1,2})','archive_month',{
+    (r'^arsiv/(?P<year>\d{4})/(?P<month>\d{1,2})/$','archive_month',{
             'template_name' : 'blog/ay.html',
             'date_field' : 'pub_date',
             'queryset' : Post.objects.filter(yayinlandi=True),
@@ -38,7 +38,6 @@ urlpatterns = patterns('django.views.generic.date_based',
     }),
 )
 urlpatterns += patterns('portal.blog.views',
-	(r'^$', 'home'),
 	(r'^post/(?P<slug>[^/]+)/$','post'),
     (r'^tag/(?P<tag>[^/]+)/$','tag'),
     (r'^tag/$','tag_index'),
