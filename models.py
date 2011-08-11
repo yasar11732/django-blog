@@ -26,7 +26,7 @@ class Post(models.Model):
     slug = models.SlugField(unique=True)
     abstract = models.TextField(max_length=500)
     post = models.TextField()
-    pub_date = models.DateTimeField("Date Published")
+    pub_date = models.DateTimeField("Date Published", default=datetime.now)
     tags = models.ManyToManyField(Tag)
     yayinlandi = models.BooleanField(default=False)
     
