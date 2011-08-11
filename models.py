@@ -13,6 +13,7 @@ class Setting(models.Model):
         
 class Tag(models.Model):
     text = models.CharField(max_length=15, unique=True, validators = [validate_slug])
+    created = models.DateTimeField(auto_now_add=True)
     
     def __unicode__(self):
         return self.text
