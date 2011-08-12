@@ -32,7 +32,7 @@ class Post(models.Model):
     yayinlandi = models.BooleanField(default=False)
     
     def __unicode__(self):
-        return self.slug
+        return self.title
         
     def get_absolute_url(self):
         return "/post/%s/" % self.slug
