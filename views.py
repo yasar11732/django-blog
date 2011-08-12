@@ -10,11 +10,11 @@ from django.core.urlresolvers import reverse
 
 
 try:
-    blog_baslik = Setting.objects.get(anahtar="blog_baslik")
+    blog_baslik = Setting.objects.get(anahtar="blog_baslik").deger
 except:
     blog_baslik = ""
 try:
-    blog_slogan = Setting.objects.get(anahtar="blog_slogan")
+    blog_slogan = Setting.objects.get(anahtar="blog_slogan").deger
 except:
     blog_slogan = ""
 
