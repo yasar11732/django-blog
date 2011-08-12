@@ -21,6 +21,16 @@ else:
 common_data = {'slogan': blog_slogan,
      'blog_name' :  blog_baslik,
          }
+         
+def homepage(request):
+    global common_data
+    query_set = Post.objects.filter(yayinlandi=True)
+    datas = {
+        'latest' : query_set.order_by("-pub_date")[:10],
+        'date_list' : query_set.dates("pub_date","year"),
+    }
+    datas.update(common_data)
+    return render_to_response("blog/index.html",datas)
 def post(request,slug):
     global common_data
     p = get_object_or_404(Post, slug=slug)

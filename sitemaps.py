@@ -23,7 +23,7 @@ class PostSitemap(Sitemap):
 		return Post.objects.filter(yayinlandi=True)
 	
 	def lastmod(self,obj):
-		return obj.pub_date
+		return obj.last_mod
 		
 class TagSitemap(Sitemap):
 	

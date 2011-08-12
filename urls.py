@@ -11,14 +11,6 @@ sitemaps = {
 }
 
 urlpatterns = patterns('django.views.generic.date_based',
-    (r'^$','archive_index',{
-        'template_name': 'blog/index.html',
-        'date_field' : 'pub_date',
-        'queryset' : Post.objects.filter(yayinlandi=True),
-        'num_latest' : 10,
-        'extra_context' : common_data
-        }),
-        
     (r'^arsiv/(?P<year>\d{4})/$','archive_year',{
             'template_name' : 'blog/yillar.html',
             'date_field' : 'pub_date',
@@ -38,6 +30,7 @@ urlpatterns = patterns('django.views.generic.date_based',
     }),
 )
 urlpatterns += patterns('portal.blog.views',
+    (r'^$','homepage'),
 	(r'^post/(?P<slug>[^/]+)/$','post'),
     (r'^tag/(?P<tag>[^/]+)/$','tag'),
     (r'^tag/$','tag_index'),
