@@ -2,7 +2,7 @@
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.views.decorators.http import condition
-from django.views.decorators import gzip
+from django.views.decorators.gzip import gzip_page
 from django.shortcuts import render_to_response, get_object_or_404
 from portal.blog.models import Post, Tag, Setting
 from django.template import RequestContext
@@ -35,7 +35,7 @@ def last_tag(request):
     return Tag.objects.all().latest("created").created
    
 @condition(last_modified_func=latest_post)
-@gzip
+@gzip_page
 def homepage(request):
     global common_data
     query_set = Post.objects.filter(yayinlandi=True)
@@ -47,7 +47,7 @@ def homepage(request):
     return render_to_response("blog/index.html",datas)
     
 @condition(last_modified_func=last_modified)
-@gzip
+@gzip_page
 def post(request,slug):
     global common_data
     p = get_object_or_404(Post, slug=slug)
@@ -62,7 +62,7 @@ def post(request,slug):
         raise Http404
 
 @condition(last_modified_func=tag_last_modified)
-@gzip      
+@gzip_page 
 def tag(request,tag):
     global common_data
     tag = get_object_or_404(Tag, text=tag)
@@ -75,7 +75,7 @@ def tag(request,tag):
     return render_to_response('blog/tag.html', datas)
 
 @condition(last_modified_func=last_tag)
-@gzip
+@gzip_page
 def tag_index(request):
     datas = {'tags' : Tag.objects.all()}
     datas.update(common_data)
