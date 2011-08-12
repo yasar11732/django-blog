@@ -6,7 +6,7 @@ from datetime import datetime
 
 class PostAdmin(admin.ModelAdmin):
     readonly_fields = ("slug","last_mod","pub_date")
-	prepopulated_fields = {"slug": ("title",)}
+    prepopulated_fields = {"slug": ("title",)}
     
     def save_model(self,request,obj,form,change):
         if obj.slug == "" or obj.slug is None:
