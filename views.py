@@ -18,6 +18,7 @@ try:
 except:
     blog_slogan = ""
 
+
 common_data = {'slogan': blog_slogan,
      'blog_name' :  blog_baslik,
          }

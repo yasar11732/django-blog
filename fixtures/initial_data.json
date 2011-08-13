@@ -1,0 +1,18 @@
+[
+  {
+    "model": "blog.Setting",
+    "pk": 1,
+    "fields": {
+      "anahtar": "blog_baslik",
+      "deger": "Blog Title Goes Here!"
+    }
+  },
+  {
+    "model": "blog.Setting",
+    "pk": 2,
+    "fields": {
+      "anahtar": "blog_slogan",
+      "deger": "Slogan Goes Here!"
+    }
+  }
+]

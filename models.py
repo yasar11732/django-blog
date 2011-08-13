@@ -28,7 +28,7 @@ class Post(models.Model):
     post = models.TextField()
     pub_date = models.DateTimeField("Date Published", default=datetime.now)
     last_mod = models.DateTimeField(auto_now=True)
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag,blank=True)
     yayinlandi = models.BooleanField(default=False)
     
     def __unicode__(self):
