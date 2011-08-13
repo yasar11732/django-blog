@@ -46,7 +46,18 @@ def homepage(request):
     }
     datas.update(common_data)
     return render_to_response("blog/index.html",datas)
-
+@condition(last_modified_func=latest_post)
+@gzip_page
+def post_index(request):
+    global common_data
+    datas = {
+        'latest' : Post.objects.filter(yayinlandi=True).order_by("-pub_date")[:30],
+        'date_list' : Post.objects.filter(yayinlandi=True).dates("pub_date","year"),
+    }
+    datas.update(common_data)
+    return render_to_response("blog/post_index.html",datas)
+    
+@gzip_page
 def arsiv_index(request):
     global common_data
     datas = {
