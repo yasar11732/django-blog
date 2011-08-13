@@ -34,7 +34,17 @@ def tag_last_modified(request,tag):
 
 def last_tag(request):
     return Tag.objects.all().latest("created").created
-   
+
+def handlenotfound(request):
+    global common_data
+    datas = {
+        'tags' : Tag.objects.all(),
+        'date_list' : Post.objects.filter(yayinlandi=True).dates("pub_date","year")
+    }
+    data.update(common_data)
+    return render_to_response("404.html",datas)
+    
+
 @condition(last_modified_func=latest_post)
 @gzip_page
 def homepage(request):
