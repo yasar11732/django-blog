@@ -1,11 +1,11 @@
 # Create your views here.
 from django.conf import settings
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404, HttpResponseNotFound
 from django.views.decorators.http import condition
 from django.views.decorators.gzip import gzip_page
 from django.shortcuts import render_to_response, get_object_or_404
 from portal.blog.models import Post, Tag, Setting
-from django.template import RequestContext
+from django.template import RequestContext, Context, loader
 from django.core.urlresolvers import reverse
 
 
@@ -41,8 +41,11 @@ def handlenotfound(request):
         'tags' : Tag.objects.all(),
         'date_list' : Post.objects.filter(yayinlandi=True).dates("pub_date","year")
     }
-    data.update(common_data)
-    return render_to_response("404.html",datas)
+    template = loader.get_template("404.html")
+    datas.update(common_data)
+    icerik = Context(datas)
+    
+    return HttpResponseNotFound(template.render(icerik))
     
 
 @condition(last_modified_func=latest_post)
