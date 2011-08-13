@@ -6,7 +6,7 @@ from django.core.validators import validate_slug
 
 class Setting(models.Model):
     anahtar = models.CharField(max_length=20,unique=True)
-    deger = models.CharField(max_length=40)
+    deger = models.CharField(max_length=100)
     
     def __unicode__(self):
         return self.anahtar
