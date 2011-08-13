@@ -31,6 +31,7 @@ urlpatterns = patterns('django.views.generic.date_based',
 )
 urlpatterns += patterns('portal.blog.views',
     (r'^$','homepage'),
+    (r'^arsiv/$','arsiv_index'),
 	(r'^post/(?P<slug>[^/]+)/$','post'),
     (r'^tag/(?P<tag>[^/]+)/$','tag'),
     (r'^tag/$','tag_index'),

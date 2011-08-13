@@ -46,7 +46,14 @@ def homepage(request):
     }
     datas.update(common_data)
     return render_to_response("blog/index.html",datas)
-    
+
+def arsiv_index(request):
+    global common_data
+    datas = {
+        'date_list' : Post.objects.filter(yayinlandi=True).dates("pub_date","year")
+    }
+    datas.update(common_data)
+    return render_to_response("blog/arsiv_index.html",datas)
 @condition(last_modified_func=last_modified)
 @gzip_page
 def post(request,slug):
