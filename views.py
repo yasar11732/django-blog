@@ -51,7 +51,7 @@ def handlenotfound(request,suggestions = None):
         'tags' : Tag.objects.all(),
         'date_list' : Post.objects.filter(yayinlandi=True).dates("pub_date","year")
     }
-    if suggestions:
+    if suggestions is not None and len(suggestions > 0):
         datas["suggestions"] = suggestions
     template = loader.get_template("404.html")
     datas.update(common_data)
