@@ -131,7 +131,6 @@ def post(request,slug):
 @gzip_page 
 def tag(request,tag):
     global common_data
-    tag = get_object_or_404(Tag, text=tag)
     try:
         tag = Tag.objects.get(text=tag)
     except Tag.DoesNotExist:
@@ -139,7 +138,7 @@ def tag(request,tag):
         if len(suggestions) <= 0:
             raise Http404
         elif len(suggestions) == 1:
-            t = Tag.objects.get(text = suggestion[0])
+            t = Tag.objects.get(text = suggestions[0])
             return HttpResponsePermanentRedirect(t.get_absolute_url())
         else:
             tags = [ Tag.objects.get(text=suggestion) for suggestion in suggestions ]
