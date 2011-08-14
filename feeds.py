@@ -4,9 +4,9 @@ from django.shortcuts import get_object_or_404
 from portal.blog.models import Post, Tag
 
 class LatestPosts(Feed):
-    title = "yasar11732: En Son Yazılar"
-    link = "/"
-    description = "Yeni yazilarin güncellemeleri"
+    title = u"yasar11732: En Son Yazılar"
+    link = u"/"
+    description = u"Yeni yazıların güncellemeleri"
 
     def items(self):
         return Post.objects.filter(yayinlandi=True).order_by("-pub_date")[:5]
@@ -26,7 +26,7 @@ class TagFeed(Feed):
 
     def title(self,obj):
 
-        return "yasar11732: %s ile ilgili makaleler" % obj.text
+        return u"yasar11732: %s ile ilgili makaleler" % obj.text
     def item_description(self,obj):
         return obj.abstract
 
@@ -34,7 +34,7 @@ class TagFeed(Feed):
         return "/tag/%s/" % obj.text
     
     def description(self, obj):
-        return "%s ile ilgili tum yazilar" % obj.text
+        return u"%s ile ilgili tüm yazılar" % obj.text
 
     def items(self,obj):
 
