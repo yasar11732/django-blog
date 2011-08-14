@@ -37,10 +37,20 @@ def latest_post(request):
     return Post.objects.filter(yayinlandi=True).latest("pub_date").pub_date
     
 def last_modified(request,slug):
-    return get_object_or_404(Post,slug=slug).last_mod
+    try:
+        post = Post.objects.get(slug=slug)
+        return post.last_mod
+    # Doing this instead of 404
+    # in order to not to break suggestions!
+    except Post.DoesNotExist:
+        return None
     
 def tag_last_modified(request,tag):
-    return get_object_or_404(Tag,text=tag).post_set.filter(yayinlandi=True).latest("pub_date").pub_date
+    try:
+        tag = Tag.objects.get(text=Tag)
+    except Tag.DoesNotExist:
+        return None
+    return tag.post_set.filter(yayinlandi=True).latest("pub_date").pub_date
 
 def last_tag(request):
     return Tag.objects.all().latest("created").created
@@ -51,7 +61,7 @@ def handlenotfound(request,suggestions = None):
         'tags' : Tag.objects.all(),
         'date_list' : Post.objects.filter(yayinlandi=True).dates("pub_date","year")
     }
-    if suggestions is not None and len(suggestions > 0):
+    if suggestions is not None:
         datas["suggestions"] = suggestions
     template = loader.get_template("404.html")
     datas.update(common_data)
@@ -100,10 +110,11 @@ def post(request,slug):
         if len(suggestions) == 0:
             raise Http404
         elif len(suggestions) == 1:
-            p = Post.objects.get(slug = suggestion[0])
+            p = Post.objects.get(slug = suggestions[0])
             return HttpResponsePermanentRedirect(p.get_absolute_url())
         else:
-            suggestions = [p.get_absolute_url() for p in Post.objects.get(slug=suggestion) for suggestion in suggestions]
+            posts = [Post.objects.get(slug=suggestion) for suggestion in suggestions]
+            suggestions = [p.get_absolute_url() for p in posts]
             return handlenotfound(request,suggestions)
         
     if p.yayinlandi or request.user.is_authenticated():
