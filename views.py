@@ -142,7 +142,7 @@ def tag(request,tag):
             t = Tag.objects.get(text = suggestion[0])
             return HttpResponsePermanentRedirect(t.get_absolute_url())
         else:
-            tags = Tag.objects.get(text=suggestion) for suggestion in suggestions
+            tags = [ Tag.objects.get(text=suggestion) for suggestion in suggestions ]
             suggestions = [tag.get_absolute_url() for tag in tags]
             return handlenotfound(request,suggestions)
     post_set = tag.post_set.filter(yayinlandi=True).order_by("-pub_date")
