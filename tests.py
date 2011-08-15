@@ -8,6 +8,7 @@ Replace this with more appropriate tests for your application.
 
 from django.test import TestCase, Client
 from blog.models import Post
+from time import sleep
 
 class suggestingboxtests(TestCase):
     
@@ -20,25 +21,31 @@ class suggestingboxtests(TestCase):
     ikisi birden ise "3"
     spam "4"
     
-    Geçersiz url için, o slug alanına ait bir makale var mı?
+    
     """
     
     def setUp(self):
         self.p = Post.objects.create(title="deneme",slug="deneme",abstract="deneme",post="deneme",yayinlandi=True)
         self.p.save()
-        
+    
+    def test_not_ajax(self):
+        "doğrudan erişime izin vermiyoruz!"
+        c = Client()
+        response = c.post('/message',{"post" : "deneme","message" : "pek iyi!"})
+        self.assertEqual(response.status_code,404)
     def test_not_get(self):
         "get metoduna izin vermiyoruz"
         c = Client()
-        response = c.get('/message')
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        response = c.get('/message',**kwargs)
         self.assertEqual(response.status_code,405)
     
     def test_successfull(self):
         "Başarılı bir mesaj ekle, 200 kodu dönmeli ve post objesine 1 adet mesaj eklenmeli"
         
         c = Client()
-        
-        response = c.post('/message',{"post" : "deneme","message" : "pek iyi!"})
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        response = c.post('/message',{"post" : "deneme","message" : "pek iyi!"},**kwargs)
         self.assertEqual(response.status_code,200)
         self.assertEqual(str(response.content),"0")
         self.assertEqual(self.p.message_set.all().count(),1)
@@ -48,8 +55,8 @@ class suggestingboxtests(TestCase):
         "Eğer url ile belirtilen post yoksa, response olarak 1 göndermeli"
         
         c = Client()
-        
-        response = c.post('/message',{"post" : "asd","message" : "pek iyi!"})
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        response = c.post('/message',{"post" : "asd","message" : "pek iyi!"},**kwargs)
         self.assertEqual(response.status_code,200)
         self.assertEqual(str(response.content),"1")
         self.assertEqual(self.p.message_set.all().count(),0)
@@ -58,8 +65,8 @@ class suggestingboxtests(TestCase):
         "Eğer mesaj çok kısa(5 karakterden az) veya uzunsa(500 karakterden fazla) response olarak 2"
         
         c = Client()
-        
-        response = c.post('/message',{"post" : "deneme","message" : "a"})
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        response = c.post('/message',{"post" : "deneme","message" : "a"},**kwargs)
         self.assertEqual(response.status_code,200)
         self.assertEqual(str(response.content),"2")
         self.assertEqual(self.p.message_set.all().count(),0)
@@ -70,15 +77,15 @@ class suggestingboxtests(TestCase):
             a += "x"
             
         c = Client()
-        response = c.post('/message',{"post" : "deneme","message" : a})
+        response = c.post('/message',{"post" : "deneme","message" : a},**kwargs)
         self.assertEqual(response.status_code,200)
         self.assertEqual(str(response.content),"2")
         self.assertEqual(self.p.message_set.all().count(),0)
         
     def test_invalid_url_and_message(self):
         c = Client()
-        
-        response = c.post('/message',{"post" : "asdf","message" : "a"})
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        response = c.post('/message',{"post" : "asdf","message" : "a"},**kwargs)
         self.assertEqual(response.status_code,200)
         self.assertEqual(str(response.content),"3")
         self.assertEqual(self.p.message_set.all().count(),0)
@@ -91,18 +98,32 @@ class suggestingboxtests(TestCase):
         
         c = Client()
         
-        response = c.post('/message',{"post" : "asdf","message" : a})
+        response = c.post('/message',{"post" : "asdf","message" : a},**kwargs)
         self.assertEqual(response.status_code,200)
         self.assertEqual(str(response.content),"3")
         self.assertEqual(self.p.message_set.all().count(),0)
         
     def test_spam(self):
         c = Client()
-        c.post('/message',{"post" : "deneme","message" : "pek iyi!"})
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        c.post('/message',{"post" : "deneme","message" : "pek iyi!"},**kwargs)
         for a in range(0,20):
-            response = c.post('/message',{"post" : "deneme","message" : "pek iyi!"})
+            response = c.post('/message',{"post" : "deneme","message" : "pek iyi!"},**kwargs)
             self.assertEqual(str(response.content),"4")
         
         self.assertEqual(self.p.message_set.all().count(),1)
         
+    def test_not_spam(self):
+        "kullanıcı 10 saniyenin ardından yeni mesaj gönderebilmeli"
+        c = Client()
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        response = c.post('/message',{"post" : "deneme","message" : "pek iyi!"},**kwargs)
+        self.assertEqual(str(response.content),"0")
+        self.assertEqual(self.p.message_set.all().count(),1)
+        
+        sleep(11)
+        
+        response = c.post('/message',{"post" : "deneme","message" : "pek iyi!"},**kwargs)
+        self.assertEqual(str(response.content),"0")
+        self.assertEqual(self.p.message_set.all().count(),2)
      

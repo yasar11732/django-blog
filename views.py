@@ -72,7 +72,8 @@ def handlenotfound(request,suggestions = None):
 
 @require_http_methods(["POST"])
 def message(request):
-
+    if not request.is_ajax():
+        return HttpResponse("Only supports ajax requests!")
     try:
         if int(time()) - request.session["last_message"] < 10:
             return HttpResponse("4")
@@ -120,7 +121,7 @@ def post_index(request):
         'date_list' : Post.objects.filter(yayinlandi=True).dates("pub_date","year"),
     }
     datas.update(common_data)
-    return render_to_response("blog/post_index.html",datas)
+    return render_to_response("blog/post_index.html",datas,context_instance=RequestContext(request))
     
 @gzip_page
 def arsiv_index(request):
