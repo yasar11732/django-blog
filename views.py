@@ -1,12 +1,13 @@
 # Create your views here.
 from django.conf import settings
 from django.http import HttpResponse, HttpResponsePermanentRedirect, Http404, HttpResponseNotFound
-from django.views.decorators.http import condition
+from django.views.decorators.http import condition, require_http_methods
 from django.views.decorators.gzip import gzip_page
 from django.shortcuts import render_to_response, get_object_or_404
-from portal.blog.models import Post, Tag, Setting
+from portal.blog.models import Post, Tag, Setting, Message
 from django.template import RequestContext, Context, loader
 from django.core.urlresolvers import reverse
+from time import time
 
 alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789-'
 # Stolen from http://norvig.com/spell-correct.html
@@ -68,6 +69,36 @@ def handlenotfound(request,suggestions = None):
     icerik = Context(datas)
     
     return HttpResponseNotFound(template.render(icerik))
+
+@require_http_methods(["POST"])
+def message(request):
+
+    try:
+        if int(time()) - request.session["last_message"] < 10:
+            return HttpResponse("4")
+    except:
+        pass
+    slug = request.POST["post"]
+    message = request.POST["message"]
+    
+    try:
+        p = Post.objects.get(slug=slug)
+    except:
+        p = None
+    
+    valid_message = False
+    if len(message) <= 500 and len(message) >= 5:
+        valid_message = True
+    if p is None and valid_message is False:
+        return HttpResponse("3")
+    elif p is None:
+        return HttpResponse("1")
+    elif valid_message is False:
+        return HttpResponse("2")
+    
+    mes = Message.objects.create(post=p,message=request.POST['message'])
+    request.session["last_message"] = int(time())
+    return HttpResponse("0")
 
 @condition(last_modified_func=latest_post)
 @gzip_page

@@ -36,6 +36,7 @@ urlpatterns += patterns('portal.blog.views',
 	(r'^post/(?P<slug>[^/]+)/$','post'),
     (r'^tag/(?P<tag>[^/]+)/$','tag'),
     (r'^tag/$','tag_index'),
+    (r'^message$','message')
 )
 
 urlpatterns += patterns('',

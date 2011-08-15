@@ -4,6 +4,8 @@ from django.contrib.sitemaps import ping_google
 from django.core.validators import validate_slug
 # Create your models here.
 
+
+
 class Setting(models.Model):
     anahtar = models.CharField(max_length=20,unique=True)
     deger = models.CharField(max_length=100)
@@ -37,12 +39,14 @@ class Post(models.Model):
     def get_absolute_url(self):
         return "/post/%s/" % self.slug
         
-    def save(self,force_insert=False, force_update=False):
-        super(Post, self).save(force_insert, force_update)
+    def save(self,force_insert=False, force_update=False,using=None):
+        super(Post, self).save(force_insert, force_update,using=using)
         if self.yayinlandi:
             try:
                 ping_google('/sitemap.xml')
             except:
                 pass
-        
-        
+
+class Message(models.Model):
+    post = models.ForeignKey(Post)
+    message = models.CharField(max_length=500)

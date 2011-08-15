@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-from portal.blog.models import Post, Tag, Setting
+from portal.blog.models import Post, Tag, Setting, Message
 from django.template.defaultfilters import slugify
 from django.contrib import admin
 from datetime import datetime
@@ -51,3 +51,4 @@ class PostAdmin(admin.ModelAdmin):
 admin.site.register(Post,PostAdmin)
 admin.site.register(Tag)
 admin.site.register(Setting)
+admin.site.register(Message)
