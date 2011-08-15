@@ -28,11 +28,6 @@ class suggestingboxtests(TestCase):
         self.p = Post.objects.create(title="deneme",slug="deneme",abstract="deneme",post="deneme",yayinlandi=True)
         self.p.save()
     
-    def test_not_ajax(self):
-        "doğrudan erişime izin vermiyoruz!"
-        c = Client()
-        response = c.post('/message',{"post" : "deneme","message" : "pek iyi!"})
-        self.assertEqual(response.status_code,404)
     def test_not_get(self):
         "get metoduna izin vermiyoruz"
         c = Client()

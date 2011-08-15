@@ -72,8 +72,6 @@ def handlenotfound(request,suggestions = None):
 
 @require_http_methods(["POST"])
 def message(request):
-    if not request.is_ajax():
-        return HttpResponse("Only supports ajax requests!")
     try:
         if int(time()) - request.session["last_message"] < 10:
             return HttpResponse("4")
