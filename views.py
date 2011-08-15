@@ -133,6 +133,7 @@ def arsiv_index(request):
 @gzip_page
 def post(request,slug):
     global common_data
+    
     try:
         p = Post.objects.get(slug=slug)
     except Post.DoesNotExist:
@@ -148,9 +149,15 @@ def post(request,slug):
             return handlenotfound(request,suggestions)
         
     if p.yayinlandi or request.user.is_authenticated():
+        messages = Setting.objects.get(anahtar="messages").deger
+        if messages == "enabled":
+            messages = True
+        else:
+            messages = False
         datas = {
                 'post': p,
                 'tags' : p.tags.all(),
+                'messages' : messages,
                 }
         datas.update(common_data)
         return render_to_response('blog/post.html', datas, context_instance=RequestContext(request))
