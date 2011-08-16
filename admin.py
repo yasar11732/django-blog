@@ -26,14 +26,23 @@ def my_slugify(text):
         text.replace(k,v)
     return slugify(text)
 
-
 class PostAdmin(admin.ModelAdmin):
     readonly_fields = ("slug","last_mod","pub_date")
+    fieldsets = [
+        (None     , { "fields" : ["title","abstract","post","tags","yayinlandi"]}),
+        ("Details", { "fields" : ["pub_date","last_mod","slug"], "classes" : ["collapse"]})
+    
+    ]
+    
+    list_display = ("title","pub_date","last_mod")
+    list_filter = ['pub_date']
+    search_fields = ["title","abstract","post"]
+    date_hierarchy = 'pub_date'
+    
     
     def save_model(self,request,obj,form,change):
         if obj.slug == "" or obj.slug is None:
             obj.slug = my_slugify(obj.title)
- 
         # I get database representation of the object to check if
         # it was not published before and it is published now
         # in order to set pub_date right
@@ -45,10 +54,14 @@ class PostAdmin(admin.ModelAdmin):
         
         obj.save()
         
-        
 
+    
+class messageAdmin(admin.ModelAdmin):
+    readonly_fields = ["post","message"]
+    def has_add_permission(*args,**kwargs):
+        return False
 
 admin.site.register(Post,PostAdmin)
 admin.site.register(Tag)
 admin.site.register(Setting)
-admin.site.register(Message)
+admin.site.register(Message,messageAdmin)
