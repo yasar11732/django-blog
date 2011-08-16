@@ -8,6 +8,7 @@ from portal.blog.models import Post, Tag, Setting, Message
 from django.template import RequestContext, Context, loader
 from django.core.urlresolvers import reverse
 from time import time
+import re
 
 alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789-'
 # Stolen from http://norvig.com/spell-correct.html
@@ -86,6 +87,13 @@ def message(request):
         p = None
     
     valid_message = False
+    try:
+        email = request.POST["email"]
+    except:
+        email = ""
+    if email != "":
+        if not re.match("^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$",email):
+            return HttpResponse("5")
     if len(message) <= 500 and len(message) >= 5:
         valid_message = True
     if p is None and valid_message is False:
@@ -95,7 +103,7 @@ def message(request):
     elif valid_message is False:
         return HttpResponse("2")
     
-    mes = Message.objects.create(post=p,message=request.POST['message'])
+    mes = Message.objects.create(post=p,message=request.POST['message'],email=email)
     request.session["last_message"] = int(time())
     return HttpResponse("0")
 

@@ -55,6 +55,21 @@ class suggestingboxtests(TestCase):
         self.assertEqual(response.status_code,200)
         self.assertEqual(str(response.content),"1")
         self.assertEqual(self.p.message_set.all().count(),0)
+    def test_mail(self):
+        "doğru mail adresinde 0 yanlış mail adresinde 5 almamız gerek"
+        c = Client()
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        response = c.post('/message',{"post" : "deneme","message" : "pek iyi!","email":"yasar11732@gmail.com"},**kwargs)
+        self.assertEqual(response.status_code,200)
+        self.assertEqual(str(response.content),"0")
+        self.assertEqual(self.p.message_set.all().count(),1)
+        
+        c = Client()
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        response = c.post('/message',{"post" : "deneme","message" : "pek iyi!","email":"yasar11732gmail.com"},**kwargs)
+        self.assertEqual(response.status_code,200)
+        self.assertEqual(str(response.content),"5")
+        self.assertEqual(self.p.message_set.all().count(),1)
         
     def test_invalid_msg(self):
         "Eğer mesaj çok kısa(5 karakterden az) veya uzunsa(500 karakterden fazla) response olarak 2"
