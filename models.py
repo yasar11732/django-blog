@@ -50,3 +50,4 @@ class Post(models.Model):
 class Message(models.Model):
     post = models.ForeignKey(Post)
     message = models.CharField(max_length=500)
+    email = models.EmailField(blank=True)
