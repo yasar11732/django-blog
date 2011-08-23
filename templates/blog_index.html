@@ -12,11 +12,12 @@
 {% block content %}
 {% if latest %}
 				{% autoescape off %}
-				{% for post in latest %}
+				{% for post,tags in latest %}
 				<div style="margin-top:2px;">
 					<a href="{% url post post.slug %}"><h4>{{ post.title }}</h4></a>
-					<p>{{ post.abstract }}
-					<a style="color:red" href="{{ protocol}}://{{ domain }}{% url post post.slug %}#disqus_thread" data-disqus-identifier="{{ post.slug }}">[Gerisini  oku...]</a></p>
+					<div>{{ post.abstract }}</div>
+					<span style="clear:both"><a style="color:red" href="{{ protocol}}://{{ domain }}{% url post post.slug %}#disqus_thread" data-disqus-identifier="{{ post.slug }}">[Gerisini  oku...]</a></span>
+                    <span style="clear:both"><strong>Etikeler:</strong>{% for tag in tags%}<a href="{% url tag tag.text %}">{{ tag.text }}</a>, {% endfor %}</span>
 				</div>
 				{% endfor%}
 				{% endautoescape %}
