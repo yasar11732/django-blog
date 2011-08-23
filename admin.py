@@ -14,7 +14,7 @@ class PostAdmin(admin.ModelAdmin):
     
     ]
     
-    list_display = ("title","pub_date","last_mod","yayinlandi")
+    list_display = ("title","pub_date","last_mod","yayinlandi_mi")
     list_filter = ['pub_date']
     search_fields = ["title","abstract","post"]
     date_hierarchy = 'pub_date'
