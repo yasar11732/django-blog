@@ -12,7 +12,7 @@ sitemaps = {
 
 urlpatterns = patterns('django.views.generic.date_based',
     url(r'^arsiv/(?P<year>\d{4})/$','archive_year',{
-            'template_name' : 'blog/yillar.html',
+            'template_name' : 'blog_yillar.html',
             'date_field' : 'pub_date',
             'queryset' : Post.objects.filter(yayinlandi=True),
             'extra_context' : common_data,
@@ -21,7 +21,7 @@ urlpatterns = patterns('django.views.generic.date_based',
     }, name="arsiv_year"),
     
     url(r'^arsiv/(?P<year>\d{4})/(?P<month>\d{1,2})/$','archive_month',{
-            'template_name' : 'blog/ay.html',
+            'template_name' : 'blog_ay.html',
             'date_field' : 'pub_date',
             'queryset' : Post.objects.filter(yayinlandi=True),
             'extra_context' : common_data,
