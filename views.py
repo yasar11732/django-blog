@@ -111,7 +111,7 @@ def homepage(request):
     global common_data
     query_set = Post.objects.filter(yayinlandi=True)
     latest = []
-    for post in query_set:
+    for post in query_set.order_by("-pub_date")[:10]:
         latest.append((post,post.tags.all()))
     datas = {
         'latest' : latest,
