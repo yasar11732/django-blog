@@ -18,7 +18,7 @@ document.location = a;
 </head>
 <body>
 <div id="container">
-    <a id="no-underline" href="/">
+    <a id="no-underline" href="{% url blog.views.homepage %}">
 	<div id="header">
 		{% block header %}
 			<h1>{{ blog_name }}</h1>
