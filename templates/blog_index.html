@@ -16,7 +16,7 @@
 				<div style="margin-top:2px;">
 					<a href="{% url post post.slug %}"><h4>{{ post.title }}</h4></a>
 					<p>{{ post.abstract }}
-					<a style="color:red" href="{% url post post.slug %}">[Gerisini  oku...]</a></p>
+					<a style="color:red" href="{{ protocol}}://{{ domain }}{% url post post.slug %}#disqus_thread" data-disqus-identifier="{{ post.slug }}">[Gerisini  oku...]</a></p>
 				</div>
 				{% endfor%}
 				{% endautoescape %}
@@ -29,8 +29,13 @@
 <p><strong>Linkler:</strong></p>
 	<ul>
 	<li><a href="{% url rss %}">En son yazılar Rss</a></li>
-	<li><a href="{% url tag_index %}">Etiketler</a></li>
-</ul>
+    {% if etiket_listesi %}
+    <p><strong>Etiketler: </strong></p>
+    {% for etiket in etiket_listesi %}
+	<li><a href="{% url tag etiket.text %}">{{ etiket.text }}</a></li>
+    {% endfor %}
+    {% endif %}
+
 {% if date_list %}
 <p><strong>Arşiv:</strong></p>
 	<ul>
@@ -40,3 +45,17 @@
 </ul>
 {% endif %}
 {% endblock %}
+{% block onpageload %}
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'yasarsblog'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+{% endblock%}

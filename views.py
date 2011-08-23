@@ -113,6 +113,7 @@ def homepage(request):
     datas = {
         'latest' : query_set.order_by("-pub_date")[:10],
         'date_list' : query_set.dates("pub_date","year"),
+        'etiket_listesi' : Tag.objects.all()
     }
     datas.update(common_data)
     return render_to_response("blog_index.html",datas)
