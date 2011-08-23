@@ -39,6 +39,9 @@ class Post(models.Model):
     def get_absolute_url(self):
         return "/post/%s/" % self.slug
         
+    def yayinlandi(self):
+        return self.yayinlandi and u"evet" or u"hayır"
+        
     def save(self,force_insert=False, force_update=False,using=None):
         super(Post, self).save(force_insert, force_update,using=using)
         if self.yayinlandi:
