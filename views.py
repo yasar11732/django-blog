@@ -110,10 +110,13 @@ def message(request):
 def homepage(request):
     global common_data
     query_set = Post.objects.filter(yayinlandi=True)
+    latest = []
+    for post in query_set:
+        latest.append((post,post.tags.all()))
     datas = {
-        'latest' : query_set.order_by("-pub_date")[:10],
+        'latest' : latest,
         'date_list' : query_set.dates("pub_date","year"),
-        'etiket_listesi' : Tag.objects.all()
+        'etiket_listesi' : Tag.objects.all(),
     }
     datas.update(common_data)
     return render_to_response("blog_index.html",datas)
