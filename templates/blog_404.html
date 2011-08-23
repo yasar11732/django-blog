@@ -1,0 +1,30 @@
+{% extends "blog_base.html" %}
+{% block title %}Bulunamadı...{% endblock %}
+{% block content %}
+{% if suggestions %}
+<h4>O yok, ama şunlar var:</h4>
+<ul>
+{% for suggestion in suggestions %}
+<li><a href="{{ suggestion }}">{{ suggestion }}</a></li>
+{% endfor%}
+</ul>
+{% else %}
+<h4>Bulamadık:</h4>
+<p>Üzgünüz, siz çok yanlış geldiniz! <a href="{% url blog.views.homepage %}">Anasayfaya dönebilir</a> ya da aşağıdaki linklerden birini takip ederek aradığınız sayfaya ulaşmaya çalışabilirsiniz.</p>
+{% endif %}
+{% if tags %}
+<p><strong>Etiketler: </strong></p><ul>
+{% for tag in tags %}
+<li><a href="{% url blog.views.tag tag.text %}">{{ tag.text }}</a></li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if date_list %}
+<p><strong>Arşiv: </strong></p><ul>
+{% for date in date_list %}
+<li><a href="{% url django.views.generic.date_based.archive_year date.year %}">{{ date.year }}</a></li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endblock %}
