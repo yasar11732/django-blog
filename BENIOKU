@@ -1,0 +1,27 @@
+YÜKLEME (gitsiz)
+https://github.com/yasar11732/django-blog/ adresine gidin
+Downloads linkine tıklayıp, istediğiniz formatta kaydedin
+indirdiğiniz dosyanın içerisinde adı yasar11732-django-blog ile başlayan bir dizin var
+o dizini django projenizin içerisine adı blog olacak şekilde taşıyın.
+git ile yüklemedeki clone işleminden sonra anlatınları uygulayın.
+
+
+YUKLEME (git ile)
+
+django projenizin içerisine "cd" ile gelin
+git clone git://github.com/yasar11732/django-blog.git blog
+
+settings.py içerisindeki INSTALLED_APPS değişkenine 'blog' ekleyin
+ana url config dosyanıza url'leri dahil edin:
+
+from django.conf.urls.defaults import patterns, include
+urlpatterns = patterns('',
+    (r'^blog/',include('blog.urls'))
+)
+
+r'^blog/' düzenli ifadesini kendinize göre düzenleyin.
+proje kök dizinindeyken şu iki komutu verin:
+python manage.py syncdb
+python manage.py collectstatic
+
+Artık kullanıma hazır. Görünümü değiştirmek için, statik dizininizdeki şablonları kullanın.
