@@ -1,0 +1,15 @@
+{% extends "blog_base.html" %}
+{% block title%}{{ blog_name }} : Etiket Listesi{% endblock %}
+
+{% block headaddition %}
+<meta name="description" content="Bu sayfadan ilgilendiğiniz bir etiket seçerek, o etiketle ilgili daha fazla sonuç görüntüleyebilirsiniz.
+{{ tags|length }} adet etiket listeleniyor." />
+{% endblock %}
+{% block content %}
+<h5>Etiket Listesi:</h5>
+<ul>
+{% for tag in tags %}
+<li><a href="{% url tag tag.text %}">{{ tag.text }}</a></li>
+{% endfor %}
+</ul>
+{% endblock%}

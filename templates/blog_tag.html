@@ -1,0 +1,31 @@
+{% extends "blog_base.html"%}
+{% block title %}{{ blog_name }} : {{ tag }} ile ilgili makaleler{% endblock %}
+{% block headaddition %}
+<link rel="alternate" type="application/rss+xml" href="{% url tag_rss tag.text %}" />
+<meta name="description" content="{{ latest_posts|length }} adet makale listeniyor.">
+{% endblock %}
+
+{% block content %}
+<strong>{{ tag.text }} ile ilgili yazılar: </strong>
+{% if latest_posts %}
+				{% autoescape off %}
+				{% for post in latest_posts %}
+				<div style="margin-top:2px;">
+					<a href="{% url blog.views.post post.slug %}"><h4>{{ post.title }}</h4></a>
+					<p>{{ post.abstract }}
+					<a style="color:red" href="{% url blog.views.post post.slug %}">[Gerisini  oku...]</a></p>
+				</div>
+				{% endfor%}
+				{% endautoescape %}
+		{% else %}
+			<p>Henüz yayınlanmış birşey yok, ya da veritabanında bir terslik var, daha sonra tekrar bekleriz.</p>
+		{% endif %}
+{% endblock %}
+
+{% block navigation %}
+<p><strong>Linkler:</strong></p>
+	<ul>
+	<li><a href="{% url blog.views.homepage %}">Anasayfa</a></li>
+	<li><a href="{% url tag_rss tag.text %}">Bu sayfanın Rss'i</a></li>
+</ul>
+{% endblock %}

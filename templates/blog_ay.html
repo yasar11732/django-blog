@@ -1,0 +1,55 @@
+{% extends "blog_base.html" %}
+{% block title %}{{ blog_name }} : {{ month.year}} yılı {{ month|date:"E" }} ayında yayınlanan makaleler{% endblock %}
+{% block headaddition %}
+<meta name="description" content="{{ makale_list|length }} adet makale yayınlandı. ">
+{% endblock %}
+{% block content %}
+    <p><strong>{{ month|date:"E"}} ayında yayınlanan makalelerin bir listesi aşağıda, </strong> isterseniz <a href="{% url arsiv_year month.year %}">{{ month.year }}
+    yılına ait tüm makaleler</a>e göz atabilirsiniz.
+    </p>
+    {% if makale_list %}
+        <ul>
+        {% for object in makale_list %}
+            <li><a href="{% url blog.views.post object.slug %}" title="{{ object.title }}">{{ object.title }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No objects for you!</p>
+    {% endif %}
+    <div>
+    <span id="oncekiay" style="float:left;visibility:hidden"><a href="{% url arsiv_month month.year previous_month.month %}">Önceki Ay</a></span>
+    {% if next_month %}
+    <span id="sonrakiay" style="float:right;visibility:hidden"><a href="{% url arsiv_month month.year next_month.month %}">Sonraki Ay</a></span>
+    {% endif %}
+    </div>
+    <script type="text/javascript">
+    var onceki = new XMLHttpRequest();
+    onceki.open("GET","{% url arsiv_month month.year previous_month.month %}",true);
+    onceki.send()
+    onceki.onreadystatechange = function(){
+        if (onceki.readyState == 4) {
+            if(onceki.status == 200) {
+                document.getElementById("oncekiay").style.visibility = "visible"
+            }
+        
+        }
+    }
+    {% if next_month %}
+    var sonraki = new XMLHttpRequest();
+    sonraki.open("GET","{% url arsiv_month month.year next_month.month %}",true);
+    sonraki.send()
+    sonraki.onreadystatechange = function(){
+        if (sonraki.readyState == 4) {
+            if(sonraki.status == 200) {
+                document.getElementById("sonrakiay").style.visibility = "visible"
+            }
+        
+        }
+    }
+    {% endif %}
+    </script>
+{% endblock %}
+
+{% block navigation %}
+<p><a href="{% url blog.views.homepage %}" title="anasayfa">Anasayfa</a></p>
+{% endblock %}

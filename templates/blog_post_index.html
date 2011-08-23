@@ -1,0 +1,41 @@
+{% extends "blog_base.html" %}
+
+{% block title %}{{ blog_name }}: Son 30 makale{% endblock %}
+{% block headaddition %}
+		<link rel="alternate" type="application/rss+xml" title="Latest articles" href="{% url rss %}" />
+		<meta name="keywords" content="linux,python,django,blog,programlama,web,ipucu, ders, tutorial">
+		<meta name="description" content="Buradan bloğumda yayınlanan son 30 makaleye ulaşabilirsiniz.">
+{% endblock %}
+{% block content %}
+<p>Görünüşe göre yazıların arşivine ulaşmak istiyorsunuz. Arşive gitmek için <a href="{% url blog.views.arsiv_index %}">buraya tıklayın.</a> Ya da
+                    aşağıdan son yayınlanan 30 makaleyi görebilirsiniz.</p>
+{% if latest %}
+				{% autoescape off %}
+				{% for post in latest %}
+				<div style="margin-top:2px;">
+                    
+					<a href="{% url blog.views.post post.slug %}">{{ post.title }}</a>
+				</div>
+				{% endfor%}
+				{% endautoescape %}
+		{% else %}
+			<p>Henüz yayınlanmış birşey yok, ya da veritabanında bir terslik var, daha sonra tekrar bekleriz.</p>
+		{% endif %}
+{% endblock %}
+
+{% block navigation %}
+<p><strong>Linkler:</strong></p>
+	<ul>
+    <li><a href="/">Anasayfa</a></li>
+	<li><a href="{% url rss %}">En son yazılar Rss</a></li>
+	<li><a href="{% url blog.views.tag_index %}">Etiketler</a></li>
+</ul>
+{% if date_list %}
+<p><strong>Arşiv:</strong></p>
+	<ul>
+    {% for date in date_list %}
+	<li><a href="{% url arsiv_year date.year %}">{{ date.year }}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

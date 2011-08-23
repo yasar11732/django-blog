@@ -1,0 +1,33 @@
+{% extends "blog_base.html" %}
+{% block title %}{{ blog_name }} : {{ year }} yılında yayınlanan tüm makaleler{% endblock %}
+{% block headaddition %}
+<meta name="description" content="{{ year }} yılında {{ makale_list|length }} makale yayınlandı.">
+{% endblock %}
+{% block content %}
+    {% if makale_list %}
+        <p><strong>{{ year }} yılında yayınlana tüm yazılara aşağıdan ulaşabilirsiniz, </strong>isterseniz sağ taraftan bir ay seçerek
+        listeyi daraltabilirsiniz. </p>
+        <ul>
+        {% for object in makale_list %}
+            <li><a href="{% url blog.views.post object.slug %}" title="{{ object.title }}">{{ object.title }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No objects for you!</p>
+    {% endif%}
+{% endblock %}
+
+{% block navigation %}
+    <p><strong>Linkler : </strong></p>
+    <ul>
+        <li><a href="{% url blog.views.homepage %}">Anasayfa</a></li>
+    </ul>
+    {% if date_list %}
+    <p><strong>Aylar: </strong></p>
+    <ul>
+        {% for date in date_list %}
+            <li><a href="{% url arsiv_month year date.month %}">{{ date|date:"E"}}</a></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endblock %}

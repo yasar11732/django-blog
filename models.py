@@ -7,13 +7,6 @@ from django.core.validators import validate_slug
 
 
 
-class Setting(models.Model):
-    anahtar = models.CharField(max_length=20,unique=True)
-    deger = models.CharField(max_length=100)
-    
-    def __unicode__(self):
-        return self.anahtar
-        
 class Tag(models.Model):
     text = models.CharField(max_length=15, unique=True, validators = [validate_slug])
     created = models.DateTimeField(default=datetime.now)
@@ -43,13 +36,13 @@ class Post(models.Model):
     def yayinlandi_mi(self):
         return self.yayinlandi and u"evet" or u"hayır"
         
-    def save(self,force_insert=False, force_update=False,using=None):
-        super(Post, self).save(force_insert, force_update,using=using)
-        if self.yayinlandi:
-            try:
-                ping_google('/sitemap.xml')
-            except:
-                pass
+    # def save(self,force_insert=False, force_update=False,using=None):
+        # super(Post, self).save(force_insert, force_update,using=using)
+        # if self.yayinlandi:
+            # try:
+                # ping_google('/sitemap.xml')
+            # except:
+                # pass
 
 class Message(models.Model):
     post = models.ForeignKey(Post)

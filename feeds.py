@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 from django.contrib.syndication.views import Feed
 from django.shortcuts import get_object_or_404
-from portal.blog.models import Post, Tag
+from blog.models import Post, Tag
 
 class LatestPosts(Feed):
     title = u"yasar11732: En Son Yazılar"

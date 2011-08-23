@@ -1,0 +1,24 @@
+{% extends "blog_base.html" %}
+{% block title %}Blog yazılarının yıllara göre arşivleri{% endblock %}
+{% block headaddition %}
+<meta name="description" content="Blog yazısı bulunan yıllar: {% for date in date_list %}{{ date.year }}, {% endfor %}" />
+<meta name="keywords" content="arşiv" />
+{% endblock %}
+{% block content %}
+{% if date_list %}
+<p>Bir yıla ait yazıların listesini görmek için lütfen <strong>aşağıdan bir yıl seçin...</strong></p>
+<ul>
+{% for date in date_list %}
+<li><a href="{% url arsiv_year date.year %}" title="{{ date.year }} yılında yayınlanan yazılar">{{ date.year }}</a></li>
+{% endfor %}
+</ul>
+{% else %}
+<p>Henüz yayınlanmış bir yazı yok!</p>
+{% endif %}
+{% endblock %}
+{% block navigation %}
+<p><strong>Linkler: </strong></p>
+<ul>
+<li><a href="{% url blog.views.homepage %}">Anasayfa</a></li>
+</ul>
+{% endblock %}

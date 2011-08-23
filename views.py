@@ -1,10 +1,11 @@
 # Create your views here.
 from django.conf import settings
+from django.contrib.sites.models import Site
 from django.http import HttpResponse, HttpResponsePermanentRedirect, Http404, HttpResponseNotFound
 from django.views.decorators.http import condition, require_http_methods
 from django.views.decorators.gzip import gzip_page
 from django.shortcuts import render_to_response, get_object_or_404
-from portal.blog.models import Post, Tag, Setting, Message
+from blog.models import Post, Tag, Message
 from django.template import RequestContext, Context, loader
 from django.core.urlresolvers import reverse
 from time import time
@@ -20,20 +21,14 @@ def suggest(word,Nwords):
    inserts    = [a + c + b     for a, b in splits for c in alphabet]
    all_suggestions = set(deletes + transposes + replaces + inserts)
    return [suggestion for suggestion in all_suggestions if suggestion in Nwords]
-   
-try:
-    blog_baslik = Setting.objects.get(anahtar="blog_baslik").deger
-except:
-    blog_baslik = ""
-try:
-    blog_slogan = Setting.objects.get(anahtar="blog_slogan").deger
-except:
-    blog_slogan = ""
 
-
-common_data = {'slogan': blog_slogan,
-     'blog_name' :  blog_baslik,
-         }
+common_data = {
+    'slogan': settings.BLOG_SLOGAN,
+    'blog_name' :  settings.BLOG_TITLE,
+    'domain' :  Site.objects.get(id=settings.SITE_ID).domain,
+    'STATIC_URL' : settings.STATIC_URL,
+    'protocol' : "http",
+    }
 
 def latest_post(request):
     return Post.objects.filter(yayinlandi=True).latest("pub_date").pub_date
@@ -65,11 +60,14 @@ def handlenotfound(request,suggestions = None):
     }
     if suggestions is not None:
         datas["suggestions"] = suggestions
-    template = loader.get_template("404.html")
+    template = loader.get_template("blog_404.html")
     datas.update(common_data)
     icerik = Context(datas)
     
     return HttpResponseNotFound(template.render(icerik))
+    
+def handleServerError(request):
+    return render_to_response("blog_500.html",Context())
 
 @require_http_methods(["POST"])
 def message(request):
@@ -117,7 +115,7 @@ def homepage(request):
         'date_list' : query_set.dates("pub_date","year"),
     }
     datas.update(common_data)
-    return render_to_response("blog/index.html",datas)
+    return render_to_response("blog_index.html",datas)
 @condition(last_modified_func=latest_post)
 @gzip_page
 def post_index(request):
@@ -127,7 +125,7 @@ def post_index(request):
         'date_list' : Post.objects.filter(yayinlandi=True).dates("pub_date","year"),
     }
     datas.update(common_data)
-    return render_to_response("blog/post_index.html",datas,context_instance=RequestContext(request))
+    return render_to_response("blog_post_index.html",datas)
     
 @gzip_page
 def arsiv_index(request):
@@ -136,7 +134,7 @@ def arsiv_index(request):
         'date_list' : Post.objects.filter(yayinlandi=True).dates("pub_date","year")
     }
     datas.update(common_data)
-    return render_to_response("blog/arsiv_index.html",datas)
+    return render_to_response("blog_arsiv_index.html",datas)
 @condition(last_modified_func=last_modified)
 @gzip_page
 def post(request,slug):
@@ -157,18 +155,14 @@ def post(request,slug):
             return handlenotfound(request,suggestions)
         
     if p.yayinlandi or request.user.is_authenticated():
-        messages = Setting.objects.get(anahtar="messages").deger
-        if messages == "enabled":
-            messages = True
-        else:
-            messages = False
+        
         datas = {
                 'post': p,
                 'tags' : p.tags.all(),
-                'messages' : messages,
+                'messages' : settings.BLOG_MESSAGES_ENABLED,
                 }
         datas.update(common_data)
-        return render_to_response('blog/post.html', datas, context_instance=RequestContext(request))
+        return render_to_response('blog_post.html', datas, context_instance=RequestContext(request))
     else:
         raise Http404
 
@@ -195,11 +189,11 @@ def tag(request,tag):
             'latest_posts': post_set,
             }
     datas.update(common_data)
-    return render_to_response('blog/tag.html', datas)
+    return render_to_response('blog_tag.html', datas)
 
 @condition(last_modified_func=last_tag)
 @gzip_page
 def tag_index(request):
     datas = {'tags' : Tag.objects.all()}
     datas.update(common_data)
-    return render_to_response('blog/tag_index.html', datas)
+    return render_to_response('blog_tag_index.html', datas)

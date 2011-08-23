@@ -1,5 +1,5 @@
 from django.contrib.sitemaps import Sitemap
-from portal.blog.models import Post, Tag
+from blog.models import Post, Tag
 
 class HomePage:
     def get_absolute_url(self):

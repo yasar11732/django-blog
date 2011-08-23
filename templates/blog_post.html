@@ -1,0 +1,235 @@
+{% extends "blog_base.html" %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block headaddition %}
+		<meta name="description" content="{{ post.abstract|striptags }}, Yayın Tarihi: {{ post.pub_date }}, Son Düzenleme: {{ post.last_mod }}, Lisans: Creative Commons">
+		<meta name="keywords" content="{% for tag in tags %}{{ tag }},{% endfor %}">
+		<style type="text/css">
+		.tag {
+			display: inline;
+		}
+		.tags {
+		margin-top: 5px;
+		}
+		</style>
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}sh/css/shCoreEclipse.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}sh/css/shThemeEclipse.css" />
+        {% if messages %}
+        <script type="text/javascript">
+        var slug = "{{ post.slug }}";
+        var boxmessage = "Lütfen yazım hatalarını, yanlış veya eksik bilgiyi haber verin.";
+        function clearAjaxMessage(){
+            document.getElementById("suggest-box-message").innerHTML= ""
+        }
+        
+        function rewritemessage(input) {
+            if (input.value == "") {
+                input.value = boxmessage;
+                input.style.color = "grey";
+            }
+        }
+        function validate_email_field() {
+            email_field = document.getElementById("emailinput");
+            
+            if(email_field.value == "") {
+                return true
+            }
+            
+            else {
+                reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+                if(reg.test(email_field.value) == false) {
+                    return false;
+                }
+                
+                else {
+                    return true;
+                }
+            }
+        
+        }
+        
+        
+        function ClearTextArea(area) {
+            if (area.value == boxmessage ) {
+                area.value = "";
+                area.style.color = "black";
+            }
+        }
+        
+        function sendform(){
+            where_to = document.getElementById("suggest-box-message");
+            message = document.getElementsByName("message")[0];
+            
+            if (validate_email_field() == false) {
+                where_to.innerHTML = "E-mail adresiniz yanlış, eğer girmek istemiyorsanız boş bırakın."
+                return false
+            }
+            
+            if (message.value == boxmessage) {
+                where_to.innerHTML = "Mesajınızı girmeyi unuttunuz."
+                return false
+            }
+            
+            xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange=function()
+            {
+                if (xmlhttp.readyState == 1) {
+                    where_to.innerHTML="Gönderiliyor.";
+                }
+                
+                if (xmlhttp.readyState==4)
+                {
+                    if (xmlhttp.status = 200){
+                        response = xmlhttp.responseText;
+                        if (response == "0") {
+                            where_to.innerHTML = "Başarılı.";
+                            alert("Siteyi daha güzel bir yer haline getirmemde bana yardımcı olduğunuz için teşekkür ederim. Eğer mail adresinizi belirttiyseniz en kısa sürede size geri dönmeye çalışacağım.");
+                        }
+                        else if (response == "1") {
+                            where_to.innerHTML = "Böyle bir makale sunucuda bulunamadı.";
+                        }
+                        else if (response == "2") {
+                            where_to.innerHTML = "Geçersiz mesaj, mesajınız 5 ile 500 karakter arasında olmalı.";
+                        }
+                        else if (response == "3") {
+                            where_to.innerHTML = "Mesajınız geçersiz ayrıca böyle bir makale sunucuda bulunamadı.";
+                        }
+                        else if (response == "4") {
+                            where_to.innerHTML = "İki mesaj arasında 10 saniye arasında beklemelisiniz."
+                        }
+                        else if (response == "5") {
+                            where_to.innerHTML = "Sunucu e-mail adresinizi kabul etmedi."
+                        }
+                        
+                        document.getElementsByName("message")[0].value = boxmessage;
+                        document.getElementsByName("message")[0].style.color = "grey";
+                        document.getElementById("emailinput").value = "";
+                        setTimeout("clearAjaxMessage()",1500);
+                    }
+                    
+                    else {
+                        where_to.innerHTML = "Sunucu " + xmlhttp.status +" mesajı gönderdi. Lütfen bu hatayı yasar11732@gmail.com adresine bildirin.\nTeşekkürler...";
+                    }
+                    
+                }
+            }
+            csrf = document.getElementsByName("csrfmiddlewaretoken")[0];
+            email = email_field = document.getElementById("emailinput").value;
+            if (email == "E-mail verirseniz size geri dönerim.") {
+                email = "";
+            }
+            xmlhttp.open("POST","{% url blog.views.message%}",true);
+            xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            xmlhttp.setRequestHeader("HTTP_X_REQUESTED_WITH","XMLHttpRequest");
+            xmlhttp.send("csrfmiddlewaretoken=" + csrf.value + "&post=" + slug + "&message=" + message.value + "&email=" + email);
+        }
+        </script>
+        {% endif %}
+{% endblock %}
+{% block content %}
+{% autoescape off%}
+            
+            <h2>{{ post.title }}</h2>
+            <p>Bu makaleyi google'da öner: <g:plusone size="medium"></g:plusone></p>
+            
+            <hr />
+            <div class="abstract">{{ post.abstract }}</div>
+            <div class="post">{{ post.post }}</div>
+            <div class="tags"> Etiketler : 
+                {% for tag in tags%}
+                <span class="tag"> <a href="{% url blog.views.tag tag.text %}" class="tag">{{ tag.text }}</a>, </span>
+                {% endfor %}
+            </div>
+            
+            {% endautoescape %}
+            
+            <div id="disqus_thread"></div>
+            
+            <noscript><a href="http://disqus.com/?ref_noscript">Disqus tarafından sağlanan </a>yorumları görebilmek için lütfen javascripti etkinleştirin.</noscript>
+			
+            <div>Blog yorumları <a href="http://disqus.com" class="dsq-brlink"> <span class="logo-disqus">Disqus</span></a> aracıyla sağlanmıştır.</div>
+{% endblock %}
+{% block navigation %}
+<p><strong>Linkler:</strong></p>
+	<ul>
+	<li><a href="{% url blog.views.homepage %}">Anasayfa</a></li>
+	<li><a href="{% url rss %}">En son yazılar Rss</a></li>
+	{% for tag in tags %}
+	<li><a href="{% url blog.views.tag tag.text %}">{{ tag.text }} hakkındaki diğer yazılar</a></li>
+	{% endfor%}
+	</ul>
+    {% if messages %}
+    <p><strong>İletişim: </strong></p>
+    <p id="suggest-box-message"></p>
+    {% csrf_token %}
+
+    <textarea name="message" onClick="ClearTextArea(this)" onBlur="rewritemessage(this);" rows="5" style="color:grey;width:100%;clear:left;clear:right;background:rgb(150,250,200);border:0px;"></textarea>
+    <b>E-posta (İsteğe bağlı):</b>
+    <input type="text" id="emailinput" style="width:100%;clear:left;clear:right"/>
+    <input type="button" onClick="sendform();" value="Gönder" style="width:100%;clear:left;clear:right">
+    <script type="text/javascript">document.getElementsByName("message")[0].value = boxmessage;</script>
+    {% endif %}
+{% endblock %}
+
+{% block onpageload %}
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+<script type="text/javascript" src="/static/sh/scripts/shCore.js"></script>
+<script src="/static/sh/scripts/shAutoloader.js" type="text/javascript"></script>
+<script type="text/javascript">
+                function path()
+				{
+				  var args = arguments,
+					  result = []
+					  ;
+					   
+				  for(var i = 0; i < args.length; i++)
+					  result.push(args[i].replace('@', '{{ STATIC_URL }}sh/scripts/'));
+					   
+				  return result
+				};
+				 
+				SyntaxHighlighter.autoloader.apply(null, path(
+				  'applescript            @shBrushAppleScript.js',
+				  'actionscript3 as3      @shBrushAS3.js',
+				  'bash shell             @shBrushBash.js',
+				  'coldfusion cf          @shBrushColdFusion.js',
+				  'cpp c                  @shBrushCpp.js',
+				  'c# c-sharp csharp      @shBrushCSharp.js',
+				  'css                    @shBrushCss.js',
+				  'delphi pascal          @shBrushDelphi.js',
+				  'diff patch pas         @shBrushDiff.js',
+				  'erl erlang             @shBrushErlang.js',
+				  'groovy                 @shBrushGroovy.js',
+				  'java                   @shBrushJava.js',
+				  'jfx javafx             @shBrushJavaFX.js',
+				  'js jscript javascript  @shBrushJScript.js',
+				  'perl pl                @shBrushPerl.js',
+				  'php                    @shBrushPhp.js',
+				  'text plain             @shBrushPlain.js',
+				  'py python              @shBrushPython.js',
+				  'ruby rails ror rb      @shBrushRuby.js',
+				  'sass scss              @shBrushSass.js',
+				  'scala                  @shBrushScala.js',
+				  'sql                    @shBrushSql.js',
+				  'vb vbnet               @shBrushVb.js',
+				  'xml xhtml xslt html    @shBrushXml.js'
+				));
+				SyntaxHighlighter.all();
+            </script>
+<script type="text/javascript">
+                /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+                var disqus_shortname = 'yasarsblog'; // required: replace example with your forum shortname
+                // The following are highly recommended additional parameters. Remove the slashes in front to use.
+                var disqus_identifier = '{{ post.slug }}';
+                var disqus_url = '{{ protocol }}://{{ domain }}{% url blog.views.post post.slug %}';
+                var disqus_developer = 0;
+                /* * * DON'T EDIT BELOW THIS LINE * * */
+                (function() {
+                     var dsq = document.createElement('script');
+                     dsq.type ='text/javascript'; 
+                     dsq.async = true;
+                     dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                     })();
+</script>
+
+{% endblock %}

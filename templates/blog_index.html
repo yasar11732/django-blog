@@ -1,0 +1,42 @@
+{% extends "blog_base.html" %}
+
+{% block title %}{{ blog_name }}: {{ slogan }}{% endblock %}
+{% block headaddition %}
+		<meta name="msvalidate.01" content="CD9DDC2AF0F7EBF1272E2C7C1FAF0E58" />
+		<META name="y_key" content="71471a74016ff0b1" />
+		<meta name="google-site-verification" content="Q5OoFC6S3n4kulwJ-nQKdrmiEMLCNcgTtBE3jfpKFms" />
+		<link rel="alternate" type="application/rss+xml" title="Latest articles" href="{% url rss %}" />
+		<meta name="keywords" content="linux,python,django,blog,programlama,web,ipucu, ders, tutorial">
+		<meta name="description" content="Çoğunluğu Django hakkında kısa derslerden oluşan kişisel bloğumda, GNU/Linux ve Python hakkında çeşitli yazılar, programlama ipuçları ve belgelendirme çevirileri de bulabilirsiniz.">
+{% endblock %}
+{% block content %}
+{% if latest %}
+				{% autoescape off %}
+				{% for post in latest %}
+				<div style="margin-top:2px;">
+					<a href="{% url post post.slug %}"><h4>{{ post.title }}</h4></a>
+					<p>{{ post.abstract }}
+					<a style="color:red" href="{% url post post.slug %}">[Gerisini  oku...]</a></p>
+				</div>
+				{% endfor%}
+				{% endautoescape %}
+		{% else %}
+			<p>Henüz yayınlanmış birşey yok, ya da veritabanında bir terslik var, daha sonra tekrar bekleriz.</p>
+		{% endif %}
+{% endblock %}
+
+{% block navigation %}
+<p><strong>Linkler:</strong></p>
+	<ul>
+	<li><a href="{% url rss %}">En son yazılar Rss</a></li>
+	<li><a href="{% url tag_index %}">Etiketler</a></li>
+</ul>
+{% if date_list %}
+<p><strong>Arşiv:</strong></p>
+	<ul>
+    {% for date in date_list %}
+	<li><a href="{% url arsiv_year date.year %}">{{ date.year }}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}
