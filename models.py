@@ -8,7 +8,8 @@ from django.core.validators import validate_slug
 
 
 class Tag(models.Model):
-    text = models.CharField(max_length=15, unique=True, validators = [validate_slug])
+    text = models.CharField(max_length=15, unique=True)
+    slug = models.SlugField(unique=True,blank=True)
     created = models.DateTimeField(default=datetime.now)
     
     def __unicode__(self):

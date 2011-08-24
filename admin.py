@@ -41,7 +41,17 @@ class messageAdmin(admin.ModelAdmin):
     fields = ["post","message","email"]
     def has_add_permission(*args,**kwargs):
         return False
+        
+class TagAdmin(admin.ModelAdmin):
+    
+    readonly_fields = ("slug",)
+    
+    def save_model(self,request,obj,form,change):
+        if obj.slug == "" or obj.slug is None:
+            obj.slug = slugify(obj.text)
+    
+        obj.save()
 
 admin.site.register(Post,PostAdmin)
-admin.site.register(Tag)
+admin.site.register(Tag,TagAdmin)
 admin.site.register(Message,messageAdmin)
