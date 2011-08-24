@@ -26,7 +26,7 @@ class LatestPosts(Feed):
         return item.pub_date
         
     def item_link(self,item):
-        return reverse('blog.views.post',args=[post.slug])
+        return reverse('blog.views.post',args=[item.slug])
 
 class TagFeed(Feed):
 
@@ -54,4 +54,4 @@ class TagFeed(Feed):
         return item.pub_date
         
     def item_link(self,item):
-        return reverse("blog.views.post",arg=[item.slug])
+        return reverse("blog.views.post",args=[item.slug])
