@@ -13,7 +13,7 @@
 {% if latest %}
 				{% autoescape off %}
 				{% for post,tags in latest %}
-				<div style="margin-top:2px;boder-bottom:2px solid grey">
+				<div style="margin-top:2px;border-bottom:2px solid grey">
 					<a href="{% url post post.slug %}"><h4>{{ post.title }}</h4></a>
                     <div><strong>Yayınlanma Tarihi</strong>: {{ post.pub_date}}, <strong>Son Düzenleme:</strong> {{ post.last_mod }}</div>
 					<div>{{ post.abstract }}</div>
