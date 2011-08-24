@@ -37,13 +37,13 @@ class Post(models.Model):
     def yayinlandi_mi(self):
         return self.yayinlandi and u"evet" or u"hayır"
         
-    # def save(self,force_insert=False, force_update=False,using=None):
-        # super(Post, self).save(force_insert, force_update,using=using)
-        # if self.yayinlandi:
-            # try:
-                # ping_google('/sitemap.xml')
-            # except:
-                # pass
+    def save(self,force_insert=False, force_update=False,using=None):
+        super(Post, self).save(force_insert, force_update,using=using)
+        if self.yayinlandi:
+            try:
+                ping_google('/sitemap.xml')
+            except:
+                pass
 
 class Message(models.Model):
     post = models.ForeignKey(Post)
