@@ -129,6 +129,7 @@
 {% autoescape off%}
             
             <h2>{{ post.title }}</h2>
+            <div><strong>Yayınlanma Tarihi</strong>: {{ post.pub_date}}, <strong>Son Düzenleme:</strong> {{ post.last_mod }}</div>
             <p>Bu makaleyi google'da öner: <g:plusone size="medium"></g:plusone></p>
             
             <hr />
@@ -139,6 +140,10 @@
                 <span class="tag"> <a href="{% url blog.views.tag tag.slug %}" class="tag">{{ tag.text }}</a>, </span>
                 {% endfor %}
             </div>
+            <p>Bu makaleyi google'da öner: <g:plusone size="medium"></g:plusone></p>
+            <div><strong>Yayınlanma Tarihi</strong>: {{ post.pub_date}}, <strong>Son Düzenleme:</strong> {{ post.last_mod }}</div>
+            
+            
             
             {% endautoescape %}
             
