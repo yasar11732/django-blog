@@ -2,7 +2,7 @@
 {% block title %}{{ post.title }}{% endblock %}
 {% block headaddition %}
 		<meta name="description" content="{{ post.abstract|striptags }}, Yayın Tarihi: {{ post.pub_date }}, Son Düzenleme: {{ post.last_mod }}, Lisans: Creative Commons">
-		<meta name="keywords" content="{% for tag in tags %}{{ tag }},{% endfor %}">
+		<meta name="keywords" content="{% for tag in tags %}{{ tag.text }},{% endfor %}">
 		<style type="text/css">
 		.tag {
 			display: inline;
@@ -135,8 +135,8 @@
             <div class="abstract">{{ post.abstract }}</div>
             <div class="post">{{ post.post }}</div>
             <div class="tags"> Etiketler : 
-                {% for tag in tags%}
-                <span class="tag"> <a href="{% url blog.views.tag tag.text %}" class="tag">{{ tag.text }}</a>, </span>
+                {% for tag in tags %}
+                <span class="tag"> <a href="{% url blog.views.tag tag.slug %}" class="tag">{{ tag.text }}</a>, </span>
                 {% endfor %}
             </div>
             

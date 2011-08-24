@@ -9,7 +9,7 @@
 <h5>Etiket Listesi:</h5>
 <ul>
 {% for tag in tags %}
-<li><a href="{% url tag tag.text %}">{{ tag.text }}</a></li>
+<li><a href="{% url tag tag.slug %}">{{ tag.text }}</a></li>
 {% endfor %}
 </ul>
 {% endblock%}

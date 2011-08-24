@@ -15,7 +15,7 @@
 {% if tags %}
 <p><strong>Etiketler: </strong></p><ul>
 {% for tag in tags %}
-<li><a href="{% url blog.views.tag tag.text %}">{{ tag.text }}</a></li>
+<li><a href="{% url blog.views.tag tag.slug %}">{{ tag.text }}</a></li>
 {% endfor %}
 </ul>
 {% endif %}

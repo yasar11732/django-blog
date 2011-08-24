@@ -175,17 +175,17 @@ def post(request,slug):
 def tag(request,tag):
     global common_data
     try:
-        tag = Tag.objects.get(text=tag)
+        tag = Tag.objects.get(slug=tag)
     except Tag.DoesNotExist:
-        suggestions = suggest(tag, [t.text for t in Tag.objects.all()])
+        suggestions = suggest(tag, [t.slug for t in Tag.objects.all()])
         if len(suggestions) <= 0:
             raise Http404
         elif len(suggestions) == 1:
-            t = Tag.objects.get(text = suggestions[0])
-            return HttpResponsePermanentRedirect(t.get_absolute_url())
+            t = Tag.objects.get(slug = suggestions[0])
+            return HttpResponsePermanentRedirect(reverse("tag",args=[t.slug]))
         else:
-            tags = [ Tag.objects.get(text=suggestion) for suggestion in suggestions ]
-            suggestions = [tag.get_absolute_url() for tag in tags]
+            tags = [ Tag.objects.get(slug=suggestion) for suggestion in suggestions ]
+            suggestions = [reverse("tag",args=[tag.slug]) for tag in tags]
             return handlenotfound(request,suggestions)
     post_set = tag.post_set.filter(yayinlandi=True).order_by("-pub_date")
     datas = {

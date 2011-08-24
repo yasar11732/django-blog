@@ -18,7 +18,7 @@
 
 					<div>{{ post.abstract }}</div>
 					<span style="clear:both"><a style="color:red" href="{{ protocol}}://{{ domain }}{% url post post.slug %}#disqus_thread" data-disqus-identifier="{{ post.slug }}">[Gerisini  oku...]</a></span>
-                    <span style="clear:both"><strong>Etikeler:</strong>{% for tag in tags%}<a href="{% url tag tag.text %}">{{ tag.text }}</a>, {% endfor %}</span>
+                    <span style="clear:both"><strong>Etikeler:</strong>{% for tag in tags%}<a href="{% url tag tag.slug %}">{{ tag.text }}</a>, {% endfor %}</span>
 
 				</div>
 				{% endfor%}
@@ -35,7 +35,7 @@
     {% if etiket_listesi %}
     <p><strong>Etiketler: </strong></p>
     {% for etiket in etiket_listesi %}
-	<li><a href="{% url tag etiket.text %}">{{ etiket.text }}</a></li>
+	<li><a href="{% url tag etiket.slug %}">{{ etiket.text }}</a></li>
     {% endfor %}
     {% endif %}
 

@@ -1,7 +1,7 @@
 {% extends "blog_base.html"%}
-{% block title %}{{ blog_name }} : {{ tag }} ile ilgili makaleler{% endblock %}
+{% block title %}{{ blog_name }} : {{ tag.text }} ile ilgili makaleler{% endblock %}
 {% block headaddition %}
-<link rel="alternate" type="application/rss+xml" href="{% url tag_rss tag.text %}" />
+<link rel="alternate" type="application/rss+xml" href="{% url tag_rss tag.slug %}" />
 <meta name="description" content="{{ latest_posts|length }} adet makale listeniyor.">
 {% endblock %}
 
@@ -26,6 +26,6 @@
 <p><strong>Linkler:</strong></p>
 	<ul>
 	<li><a href="{% url blog.views.homepage %}">Anasayfa</a></li>
-	<li><a href="{% url tag_rss tag.text %}">Bu sayfanın Rss'i</a></li>
+	<li><a href="{% url tag_rss tag.slug %}">Bu sayfanın Rss'i</a></li>
 </ul>
 {% endblock %}
