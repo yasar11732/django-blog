@@ -2,7 +2,22 @@
 from django.contrib.syndication.views import Feed
 from django.shortcuts import get_object_or_404
 from blog.models import Post, Tag
-from django.core.urlresolvers import reverse
+
+from django.core import urlresolvers
+
+class lazy_string(object):
+    def __init__(self, function, *args, **kwargs):
+        self.function=function
+        self.args=args
+        self.kwargs=kwargs
+        
+    def __str__(self):
+        if not hasattr(self, 'str'):
+            self.str=self.function(*self.args, **self.kwargs)
+        return self.str
+
+def reverse(*args, **kwargs):
+    return lazy_string(urlresolvers.reverse, *args, **kwargs)
 
 class LatestPosts(Feed):
     title = u"yasar11732: En Son Yazılar"
@@ -22,7 +37,7 @@ class LatestPosts(Feed):
         return item.pub_date
         
     def item_link(self,item):
-        return reverse_lazy('blog.views.post',args=[post.slug])
+        return reverse('blog.views.post',args=[post.slug])
 
 class TagFeed(Feed):
 
