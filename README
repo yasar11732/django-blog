@@ -1,37 +1,8 @@
-FOR ENGLISH INSTRUCTIONS SEE BOTTOM OF THE PAGE!
+Türkçe açıklamalar için BENIOKU dosyasına bakınız.
 
 author: Yaşar Arabacı
 email: yasar11732@gmail.com
-web-site:yasar.serveblog.net (ayrıca projenin çalışan hali | also a working demo of this project)
-
-YÜKLEME (gitsiz)
-https://github.com/yasar11732/django-blog/ adresine gidin
-Downloads linkine tıklayıp, istediğiniz formatta kaydedin
-indirdiğiniz dosyanın içerisinde adı yasar11732-django-blog ile başlayan bir dizin var
-o dizini django projenizin içerisine adı blog olacak şekilde taşıyın.
-git ile yüklemedeki clone işleminden sonra anlatınları uygulayın.
-
-
-YUKLEME (git ile)
-
-django projenizin içerisine "cd" ile gelin
-git clone git://github.com/yasar11732/django-blog.git blog
-
-settings.py içerisindeki INSTALLED_APPS değişkenine 'blog' ekleyin
-ana url config dosyanıza url'leri dahil edin:
-
-from django.conf.urls.defaults import patterns, include
-urlpatterns = patterns('',
-    (r'^blog/',include('blog.urls'))
-)
-
-r'^blog/' düzenli ifadesini kendinize göre düzenleyin.
-proje kök dizinindeyken şu iki komutu verin:
-python manage.py syncdb
-python manage.py collectstatic
-
-Artık kullanıma hazır. Görünümü değiştirmek için, statik dizininizdeki şablonları kullanın.
-
+web-site:yasar.serveblog.net (also a working demo of this project)
 
 INSTALLATION (without git)
 Download source code from https://github.com/yasar11732/django-blog/
@@ -42,7 +13,13 @@ INSTALLATION (with git)
 cd into your django project
 git clone git://github.com/yasar11732/django-blog.git blog
 add blog into your INSTALLED_APPLICATIONS
+define these in settings module.
+
+BLOG_TITLE = u"yasar11732"
+BLOG_SLOGAN = u"Linux ve Python hakkında makaleler ve kısa ipuçları"
+BLOG_MESSAGES_ENABLED = True
+
 include blog.urls in your root url config.
 syncdb and collecstatic
 
-You are ready to go. You may want to customize templates at this point.
+At this point, you will get an error on main blog url, since you don't have a post yet, create a initial post from admin site.
