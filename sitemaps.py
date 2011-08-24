@@ -1,16 +1,21 @@
 from django.contrib.sitemaps import Sitemap
 from blog.models import Post, Tag
+from django.utils.functional import lazy
+from django.core import urlresolvers
+
+    
+reverse = lazy(urlresolvers.reverse, str)
 
 class HomePage:
     def get_absolute_url(self):
-        return "/"
+        return reverse("blog.views.homepage")
 
 class HomePageSitemap(Sitemap):
     changefreq = "daily"
     priority = "1"
     
     def items(self):
-        return [HomePage(),]
+        return [HomePage()]
     
     def lastmod(self,obj):
         return Post.objects.filter(yayinlandi=True).order_by("-pub_date")[0].pub_date

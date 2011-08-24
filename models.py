@@ -2,8 +2,11 @@
 from django.db import models
 from datetime import datetime
 from django.contrib.sitemaps import ping_google
-from django.core.validators import validate_slug
-# Create your models here.
+from django.utils.functional import lazy
+from django.core import urlresolvers
+
+    
+reverse = lazy(urlresolvers.reverse, str)
 
 
 
@@ -16,7 +19,7 @@ class Tag(models.Model):
         return self.text
         
     def get_absolute_url(self):
-        return "/tag/%s/" % self.text
+        return reverse("tag",args=[self.slug])
 
 class Post(models.Model):
     title = models.CharField(max_length=100)
@@ -32,7 +35,7 @@ class Post(models.Model):
         return self.title
         
     def get_absolute_url(self):
-        return "/post/%s/" % self.slug
+        return reverse("blog.views.post",args=[self.slug])
         
     def yayinlandi_mi(self):
         return self.yayinlandi and u"evet" or u"hayır"
