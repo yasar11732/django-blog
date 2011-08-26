@@ -33,9 +33,8 @@ class PostAdmin(admin.ModelAdmin):
                 obj.pub_date = datetime.now()
         
         admin.ModelAdmin.save_model(self,request,obj,form,change)
-        
 
-    
+   
 class messageAdmin(admin.ModelAdmin):
     readonly_fields = ["post","message","email"]
     fields = ["post","message","email"]
