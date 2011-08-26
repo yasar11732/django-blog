@@ -32,7 +32,7 @@ class PostAdmin(admin.ModelAdmin):
             if obj_db.yayinlandi == False and obj.yayinlandi == True:
                 obj.pub_date = datetime.now()
         
-        obj.save()
+        super(admin.ModelAdmin,self).save_model(request,obj,form,change)
         
 
     
