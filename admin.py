@@ -22,7 +22,7 @@ class PostAdmin(admin.ModelAdmin):
     
     def save_model(self,request,obj,form,change):
         if obj.slug == "" or obj.slug is None:
-            obj.slug = slugify(obj.title)
+            obj.slug = slugify(obj.title)[:49]
         # I get database representation of the object to check if
         # it was not published before and it is published now
         # in order to set pub_date right
@@ -33,9 +33,8 @@ class PostAdmin(admin.ModelAdmin):
                 obj.pub_date = datetime.now()
         
         admin.ModelAdmin.save_model(self,request,obj,form,change)
-        
 
-    
+   
 class messageAdmin(admin.ModelAdmin):
     readonly_fields = ["post","message","email"]
     fields = ["post","message","email"]
