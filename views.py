@@ -9,6 +9,7 @@ from blog.models import Post, Tag, Message
 from django.template import RequestContext, Context, loader
 from django.core.urlresolvers import reverse
 from time import time
+from django.db.models import Count
 import re
 
 alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789-'
@@ -116,7 +117,7 @@ def homepage(request):
     datas = {
         'latest' : latest,
         'date_list' : query_set.dates("pub_date","year"),
-        'etiket_listesi' : Tag.objects.all(),
+        'etiket_listesi' : Tag.objects.annotate(post_sayisi=Count('post')).order_by("-post_sayisi")[:10]
     }
     datas.update(common_data)
     return render_to_response("blog_index.html",datas)

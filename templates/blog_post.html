@@ -158,9 +158,6 @@
 	<ul>
 	<li><a href="{% url blog.views.homepage %}">Anasayfa</a></li>
 	<li><a href="{% url rss %}">En son yazılar Rss</a></li>
-	{% for tag in tags %}
-	<li><a href="{% url blog.views.tag tag.slug %}">{{ tag.text }} hakkındaki diğer yazılar</a></li>
-	{% endfor%}
 	</ul>
     {% if messages %}
     <p><strong>İletişim: </strong></p>

@@ -18,7 +18,7 @@
                     <div><strong>Yayınlanma Tarihi</strong>: {{ post.pub_date}}, <strong>Son Düzenleme:</strong> {{ post.last_mod }}</div>
 					<div>{{ post.abstract }}</div>
 					<span style="clear:both"><a style="color:red" href="{{ protocol}}://{{ domain }}{% url post post.slug %}#disqus_thread" data-disqus-identifier="{{ post.slug }}">[Gerisini  oku...]</a></span>
-                    <span style="clear:both"><strong>Etikeler:</strong>{% for tag in tags%}<a href="{% url tag tag.slug %}">{{ tag.text }}</a>, {% endfor %}</span>
+                    <strong>Etikeler:</strong>{% for tag in tags%}<span class="tag"><a href="{% url tag tag.slug %}">{{ tag.text }}</a></span>, {% endfor %}
 
 				</div>
 				{% endfor%}
