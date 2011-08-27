@@ -35,7 +35,7 @@
     {% if etiket_listesi %}
     <p><strong>Etiketler: </strong></p>
     {% for etiket in etiket_listesi %}
-	<li><a href="{% url tag etiket.slug %}">{{ etiket.text }}[{{ tag.post_sayisi }}]</a></li>
+	<li><a href="{% url tag etiket.slug %}">{{ etiket.text }}[{{ etiket.post_sayisi }}]</a></li>
     {% endfor %}
     {% endif %}
 
