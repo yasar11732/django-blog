@@ -3,6 +3,7 @@ from blog.models import Post, Tag, Message
 from django.contrib import admin
 from datetime import datetime
 from unicodedata import normalize
+from re import sub
 
 # To handle turkish characters better!
 # stolen from: http://gokmengorgen.net/post/detail/djangoda-turkce-destekli-slugify/
@@ -10,7 +11,8 @@ from unicodedata import normalize
 def slugify_unicode(value):
     value = value.replace(u'\u0131', 'i')
     value = normalize('NFKD', value).encode('ascii', 'ignore')
-    value = unicode(re.sub('[^\w\s-]', '', value).strip().lower())
+    value = unicode(sub('[^\w\s-]', '', value).strip().lower())
+    return sub('[-\s]+', '-', value)
 
 class PostAdmin(admin.ModelAdmin):
     readonly_fields = ("slug","last_mod","pub_date")
