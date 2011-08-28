@@ -1,10 +1,16 @@
 # -*- coding:utf-8 -*-
 from blog.models import Post, Tag, Message
-from django.template.defaultfilters import slugify
 from django.contrib import admin
 from datetime import datetime
+from unicodedata import normalize
 
 # To handle turkish characters better!
+# stolen from: http://gokmengorgen.net/post/detail/djangoda-turkce-destekli-slugify/
+
+def slugify_unicode(value):
+    value = value.replace(u'\u0131', 'i')
+    value = normalize('NFKD', value).encode('ascii', 'ignore')
+    value = unicode(re.sub('[^\w\s-]', '', value).strip().lower())
 
 class PostAdmin(admin.ModelAdmin):
     readonly_fields = ("slug","last_mod","pub_date")
@@ -22,7 +28,8 @@ class PostAdmin(admin.ModelAdmin):
     
     def save_model(self,request,obj,form,change):
         if obj.slug == "" or obj.slug is None:
-            obj.slug = slugify(obj.title)[:49]
+            obj.slug = slugify_unicode(obj.title)[:49]
+        
         # I get database representation of the object to check if
         # it was not published before and it is published now
         # in order to set pub_date right

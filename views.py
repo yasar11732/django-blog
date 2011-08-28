@@ -4,6 +4,7 @@ from django.contrib.sites.models import Site
 from django.http import HttpResponse, HttpResponsePermanentRedirect, Http404, HttpResponseNotFound
 from django.views.decorators.http import condition, require_http_methods
 from django.views.decorators.gzip import gzip_page
+from django.views.decorators.cache import cache_page
 from django.shortcuts import render_to_response, get_object_or_404
 from blog.models import Post, Tag, Message
 from django.template import RequestContext, Context, loader
@@ -108,6 +109,7 @@ def message(request):
 
 @condition(last_modified_func=latest_post)
 @gzip_page
+@cache_page(900)
 def homepage(request):
     global common_data
     query_set = Post.objects.filter(yayinlandi=True)
@@ -123,6 +125,7 @@ def homepage(request):
     return render_to_response("blog_index.html",datas)
 @condition(last_modified_func=latest_post)
 @gzip_page
+@cache_page(900)
 def post_index(request):
     global common_data
     datas = {
@@ -133,6 +136,7 @@ def post_index(request):
     return render_to_response("blog_post_index.html",datas)
     
 @gzip_page
+@cache_page(900)
 def arsiv_index(request):
     global common_data
     datas = {
@@ -142,6 +146,7 @@ def arsiv_index(request):
     return render_to_response("blog_arsiv_index.html",datas)
 @condition(last_modified_func=last_modified)
 @gzip_page
+@cache_page(900)
 def post(request,slug):
     global common_data
     
@@ -172,7 +177,8 @@ def post(request,slug):
         raise Http404
 
 @condition(last_modified_func=tag_last_modified)
-@gzip_page 
+@gzip_page
+@cache_page(900)
 def tag(request,tag):
     global common_data
     try:
@@ -198,6 +204,7 @@ def tag(request,tag):
 
 @condition(last_modified_func=last_tag)
 @gzip_page
+@cache_page(900)
 def tag_index(request):
     datas = {'tags' : Tag.objects.all()}
     datas.update(common_data)
