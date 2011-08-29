@@ -20,7 +20,7 @@ class LatestPosts(Feed):
         return item.title
 
     def item_description(self,item):
-        return item.abstract
+        return item.abstract + item.post
     
     def item_pubdate(self,item):
         return item.pub_date
