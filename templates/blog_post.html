@@ -13,6 +13,7 @@
 		</style>
         <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}sh/css/shCoreEclipse.css" />
         <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}sh/css/shThemeEclipse.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}prettify.css" />
         {% if messages %}
         <script type="text/javascript">
         var slug = "{{ post.slug }}";
@@ -173,6 +174,8 @@
 {% endblock %}
 
 {% block onpageload %}
+<script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
+<script type="text/javascript">prettyPrint()</script>
 <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
 <script type="text/javascript" src="/static/sh/scripts/shCore.js"></script>
 <script src="/static/sh/scripts/shAutoloader.js" type="text/javascript"></script>
