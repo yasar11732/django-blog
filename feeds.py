@@ -35,7 +35,7 @@ class TagFeed(Feed):
         return u"yasar11732: %s ile ilgili makaleler" % obj.text
     
     def item_description(self,obj):
-        return obj.abstract
+        return obj.abstract + item.post
 
     def link(self,obj):
         return reverse("tag",args=[obj.slug])
