@@ -3,22 +3,22 @@
 {% block title %}{{ blog_name }}: {{ slogan }}{% endblock %}
 {% block headaddition %}
 		<meta name="msvalidate.01" content="CD9DDC2AF0F7EBF1272E2C7C1FAF0E58" />
-		<META name="y_key" content="71471a74016ff0b1" />
+		<meta name="y_key" content="71471a74016ff0b1" />
 		<meta name="google-site-verification" content="Q5OoFC6S3n4kulwJ-nQKdrmiEMLCNcgTtBE3jfpKFms" />
 		<link rel="alternate" type="application/rss+xml" title="Latest articles" href="{% url rss %}" />
-		<meta name="keywords" content="linux,python,django,blog,programlama,web,ipucu, ders, tutorial">
-		<meta name="description" content="Çoğunluğu Django hakkında kısa derslerden oluşan kişisel bloğumda, GNU/Linux ve Python hakkında çeşitli yazılar, programlama ipuçları ve belgelendirme çevirileri de bulabilirsiniz.">
+		<meta name="keywords" content="linux,python,django,blog,programlama,web,ipucu, ders, tutorial" />
+		<meta name="description" content="Çoğunluğu Django hakkında kısa derslerden oluşan kişisel bloğumda, GNU/Linux ve Python hakkında çeşitli yazılar, programlama ipuçları ve belgelendirme çevirileri de bulabilirsiniz." />
 {% endblock %}
 {% block content %}
 {% if latest %}
 				{% autoescape off %}
 				{% for post,tags in latest %}
 				<div style="margin-top:2px;border-bottom:2px solid grey">
-					<a href="{% url post post.slug %}"><h4>{{ post.title }}</h4></a>
+					<h4 onclick="document.location = '{% url post post.slug %}'" style="cursor:pointer">{{ post.title }}</h4>
                     <div><strong>Yayınlanma Tarihi</strong>: {{ post.pub_date}}, <strong>Son Düzenleme:</strong> {{ post.last_mod }}</div>
 					<div>{{ post.abstract }}</div>
-					<span style="clear:both"><a style="color:red" href="{{ protocol}}://{{ domain }}{% url post post.slug %}#disqus_thread" data-disqus-identifier="{{ post.slug }}">[Gerisini  oku...]</a></span>
-                    <strong>Etikeler:</strong>{% for tag in tags%}<span class="tag"><a href="{% url tag tag.slug %}">{{ tag.text }}</a></span>, {% endfor %}
+
+                    <p style="font-size:11px;"><a style="color:red" href="{{ protocol}}://{{ domain }}{% url post post.slug %}#disqus_thread">[Gerisini  oku...]</a><strong> Etikeler:</strong>{% for tag in tags%}<a href="{% url tag tag.slug %}">{{ tag.text }}</a>, {% endfor %}</p>
 
 				</div>
 				{% endfor%}
@@ -32,11 +32,14 @@
 <p><strong>Linkler:</strong></p>
 	<ul>
 	<li><a href="{% url rss %}">En son yazılar Rss</a></li>
+    </ul>
     {% if etiket_listesi %}
     <p><strong>Etiketler: </strong></p>
+    <ul>
     {% for etiket in etiket_listesi %}
 	<li><a href="{% url tag etiket.slug %}">{{ etiket.text }}[{{ etiket.post_sayisi }}]</a></li>
     {% endfor %}
+    </ul>
     {% endif %}
 
 {% if date_list %}

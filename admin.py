@@ -56,7 +56,7 @@ class TagAdmin(admin.ModelAdmin):
     
     def save_model(self,request,obj,form,change):
         if obj.slug == "" or obj.slug is None:
-            obj.slug = slugify(obj.text)
+            obj.slug = slugify_unicode(obj.text)
     
         obj.save()
 

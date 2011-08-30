@@ -1,8 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>{% block title %}{% endblock %}</title>
-<meta http-equiv="content-type" content="text/html; utf-8">
+<meta http-equiv="content-type" content="text/html; utf-8" />
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}styles.css" />
 <script type="text/javascript">
 function search(){
@@ -11,6 +12,9 @@ a = a + " site:{{ domain }}";
 a = a.replace(" ","+");
 a = "http://www.google.com/#q=" + a;
 document.location = a;
+}
+function goHome() {
+document.location = "{% url blog.views.homepage %}"
 }
 </script>
 {% block headaddition %}
@@ -31,14 +35,13 @@ document.location = a;
 </head>
 <body>
 <div id="container">
-    <a id="no-underline" href="{% url blog.views.homepage %}">
-	<div id="header">
+    <div id="header" onclick="document.location = '{% url blog.views.homepage %}'" style="cursor:pointer">
 		{% block header %}
+        <div style="float:right"><div class="g-plusone"></div></div>
 			<h1>{{ blog_name }}</h1>
 			<h4>{{ slogan }}</h4>
-		{% endblock %}
+        {% endblock %}
 	</div>
-    </a>
   <div id="wrapper">
     <div id="content">
 	  {% autoescape off%}
@@ -49,7 +52,7 @@ document.location = a;
   </div>
   <div class="navigation">
     <p><strong>Google Araması: </strong></p>
-    <form method="post" action="#" onSubmit="search();return false;">
+    <form method="post" action="#" onsubmit="search();return false;">
     <input type="text" id="searchbox" />
     </form>
     {% block navigation %}
@@ -80,7 +83,7 @@ document.location = a;
   <div id="footer">
     {% block footer %}
 		<p>Copyright (c) 2011 Yasar Arabaci - Tüm hakları saklıdır. </p>
-		<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons Lisansi" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br />Bu <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text" rel="dct:type">çalışma</span> <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons License</a> ile lisanslanmıştır.
+		<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons Lisansi" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br />Bu çalışma <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons License</a> ile lisanslanmıştır.
 		<p style="font-size:10px"><a href="https://www.djangoproject.com/">Django Powered!</a></p>
 	{% endblock %}
   </div>

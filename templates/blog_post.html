@@ -1,12 +1,9 @@
 {% extends "blog_base.html" %}
 {% block title %}{{ post.title }}{% endblock %}
 {% block headaddition %}
-		<meta name="description" content="{{ post.abstract|striptags }}, Yayın Tarihi: {{ post.pub_date }}, Son Düzenleme: {{ post.last_mod }}, Lisans: Creative Commons">
-		<meta name="keywords" content="{% for tag in tags %}{{ tag.text }},{% endfor %}">
+		<meta name="description" content="{{ post.abstract|striptags }}, Yayın Tarihi: {{ post.pub_date }}, Son Düzenleme: {{ post.last_mod }}, Lisans: Creative Commons" />
+		<meta name="keywords" content="{% for tag in tags %}{{ tag.text }},{% endfor %}" />
 		<style type="text/css">
-		span.tag {
-			display: inline;
-		}
 		.tags {
 		margin-top: 5px;
 		}
@@ -119,7 +116,7 @@
             xmlhttp.open("POST","{% url blog.views.message%}",true);
             xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
             xmlhttp.setRequestHeader("HTTP_X_REQUESTED_WITH","XMLHttpRequest");
-            xmlhttp.send("csrfmiddlewaretoken=" + csrf.value + "&post=" + slug + "&message=" + message.value + "&email=" + email);
+            xmlhttp.send("csrfmiddlewaretoken=" + csrf.value + "&amp;post=" + slug + "&amp;message=" + message.value + "&amp;email=" + email);
         }
         </script>
         {% endif %}
@@ -128,8 +125,7 @@
 {% autoescape off%}
             
             <h2>{{ post.title }}</h2>
-            <div><strong>Yayınlanma Tarihi</strong>: {{ post.pub_date}}, <strong>Son Düzenleme:</strong> {{ post.last_mod }}</div>
-            <p>Bu makaleyi google'da öner: <g:plusone size="medium"></g:plusone></p>
+            <div style="font-size:12px"><strong>Yayınlanma Tarihi</strong>: {{ post.pub_date}}, <strong>Son Düzenleme:</strong> {{ post.last_mod }}</div>
             
             <hr />
             <div class="abstract">{{ post.abstract }}</div>
@@ -139,8 +135,7 @@
                 <span class="tag"> <a href="{% url blog.views.tag tag.slug %}" class="tag">{{ tag.text }}</a>, </span>
                 {% endfor %}
             </div>
-            <p>Bu makaleyi google'da öner: <g:plusone size="medium"></g:plusone></p>
-            <div><strong>Yayınlanma Tarihi</strong>: {{ post.pub_date}}, <strong>Son Düzenleme:</strong> {{ post.last_mod }}</div>
+            <div style="font-size:12px"><strong>Yayınlanma Tarihi</strong>: {{ post.pub_date}}, <strong>Son Düzenleme:</strong> {{ post.last_mod }}</div>
             
             
             
@@ -163,10 +158,10 @@
     <p id="suggest-box-message"></p>
     {% csrf_token %}
 
-    <textarea name="message" onClick="ClearTextArea(this)" onBlur="rewritemessage(this);" rows="5" style="color:grey;width:100%;clear:left;clear:right;background:rgb(150,250,200);border:0px;"></textarea>
+    <textarea name="message" onclick="ClearTextArea(this)" onblur="rewritemessage(this);" rows="5" cols="20" style="color:grey;width:100%;clear:left;clear:right;background:rgb(150,250,200);border:0px;"></textarea>
     <b>E-posta (İsteğe bağlı):</b>
     <input type="text" id="emailinput" style="width:100%;clear:left;clear:right"/>
-    <input type="button" onClick="sendform();" value="Gönder" style="width:100%;clear:left;clear:right">
+    <input type="button" onclick="sendform();" value="Gönder" style="width:100%;clear:left;clear:right" />
     <script type="text/javascript">document.getElementsByName("message")[0].value = boxmessage;</script>
     {% endif %}
 {% endblock %}
