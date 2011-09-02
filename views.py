@@ -182,6 +182,15 @@ def post(request,slug):
             socket.close()
             jdict = json.loads(response)
             datas["shorturl"] = jdict["id"]
+        except:
+            import traceback
+            import StringIO
+            from django.core.mail import mail_admins
+            b = StringIO.StringIO
+            traceback.print_exc(file=b)
+            
+            mail_admins("url shortage error",b,)
+            
         return render_to_response('blog_post.html', datas, context_instance=RequestContext(request))
     else:
         raise Http404
