@@ -1,6 +1,8 @@
 # Create your views here.
 from django.conf import settings
 from django.contrib.sites.models import Site
+import urllib2
+import json
 from django.http import HttpResponse, HttpResponsePermanentRedirect, Http404, HttpResponseNotFound
 from django.views.decorators.http import condition, require_http_methods
 from django.views.decorators.gzip import gzip_page
@@ -165,13 +167,21 @@ def post(request,slug):
             return handlenotfound(request,suggestions)
         
     if p.yayinlandi or request.user.is_authenticated():
-        
         datas = {
                 'post': p,
                 'tags' : p.tags.all(),
                 'messages' : settings.BLOG_MESSAGES_ENABLED,
                 }
         datas.update(common_data)
+        try:
+            abs_url = common_data["protocol"] + "://" + common_data["domain"] + p.get_absolute_url()
+            request_line = '{"longUrl" : "' + abs_url + '"}'
+            request = urllib2.Request("https://www.googleapis.com/urlshortener/v1/url",data=request_line,headers={"Content-Type" : "application/json"})
+            socket = urllib2.urlopen(request)
+            response = socket.read()
+            socket.close()
+            jdict = json.loads(response)
+            datas["shorturl"] = jdict["id"]
         return render_to_response('blog_post.html', datas, context_instance=RequestContext(request))
     else:
         raise Http404

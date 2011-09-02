@@ -126,7 +126,9 @@
             
             <h2>{{ post.title }}</h2>
             <div style="font-size:12px"><strong>Yayınlanma Tarihi</strong>: {{ post.pub_date}}, <strong>Son Düzenleme:</strong> {{ post.last_mod }}</div>
-            
+            {% if shorturl %}
+            <div><strong>Kısa Link: </strong>{{ shorturl }}</div>
+            {% endif %}
             <hr />
             <div class="abstract">{{ post.abstract }}</div>
             <div class="post">{{ post.post }}</div>
