@@ -190,7 +190,7 @@ def post(request,slug):
             traceback.print_exc(file=b)
             
             mail_admins("url shortage error",b,)
-            
+        mail_admins("your data!",datas)    
         return render_to_response('blog_post.html', datas, context_instance=RequestContext(request))
     else:
         raise Http404
