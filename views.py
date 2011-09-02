@@ -186,10 +186,8 @@ def post(request,slug):
             import traceback
             import StringIO
             
-            b = StringIO.StringIO
-            traceback.print_exc(file=b)
             
-            mail_admins("url shortage error",b,)
+            mail_admins("url shortage error",traceback.format_exc())
         mail_admins("your data!",datas)    
 
         return render_to_response('blog_post.html', datas, context_instance=RequestContext(request))
