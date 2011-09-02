@@ -174,7 +174,7 @@ def post(request,slug):
                 }
         datas.update(common_data)
         try:
-            abs_url = common_data["protocol"] + "://" + common_data["domain"] + p.get_absolute_url()
+            abs_url = common_data["protocol"] + "://" + common_data["domain"] + str(p.get_absolute_url())
             request_line = '{"longUrl" : "' + abs_url + '"}'
             request = urllib2.Request("https://www.googleapis.com/urlshortener/v1/url",data=request_line,headers={"Content-Type" : "application/json"})
             socket = urllib2.urlopen(request)
