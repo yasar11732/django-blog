@@ -151,7 +151,7 @@ def arsiv_index(request):
 @cache_page(900)
 def post(request,slug):
     global common_data
-    
+    from django.core.mail import mail_admins
     try:
         p = Post.objects.get(slug=slug)
     except Post.DoesNotExist:
@@ -185,12 +185,13 @@ def post(request,slug):
         except:
             import traceback
             import StringIO
-            from django.core.mail import mail_admins
+            
             b = StringIO.StringIO
             traceback.print_exc(file=b)
             
             mail_admins("url shortage error",b,)
         mail_admins("your data!",datas)    
+
         return render_to_response('blog_post.html', datas, context_instance=RequestContext(request))
     else:
         raise Http404
