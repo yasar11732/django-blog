@@ -1,6 +1,8 @@
 {% extends "blog_base.html" %}
 {% block title %}{{ post.title }}{% endblock %}
 {% block headaddition %}
+        <meta property="og:title" content="{{ post.title }}" />
+        <meta property="og:description" content="{{ post.abstract|striptags }}" />
 		<meta name="description" content="{{ post.abstract|striptags }}, Yayın Tarihi: {{ post.pub_date }}, Son Düzenleme: {{ post.last_mod }}, Lisans: Creative Commons" />
 		<meta name="keywords" content="{% for tag in tags %}{{ tag.text }},{% endfor %}" />
 		<style type="text/css">
@@ -126,8 +128,24 @@
             
             <h2>{{ post.title }}</h2>
             <div style="font-size:12px"><strong>Yayınlanma Tarihi</strong>: {{ post.pub_date}}, <strong>Son Düzenleme:</strong> {{ post.last_mod }}</div>
-            {% if shorturl %}
-            <div><strong>Kısa Link: </strong>{{ shorturl }}</div>
+
+            <div style="margin-top:2px"><!-- AddThis Button BEGIN -->
+            <div class="addthis_toolbox addthis_default_style " >
+            <a href="http://www.addthis.com/bookmark.php?v=250&amp;pubid=ra-4e5ce48d41077802" class="addthis_button_compact"></a>
+            <a class="addthis_button_preferred_1"></a>
+            <a class="addthis_button_preferred_2"></a>
+            <a class="addthis_button_preferred_3"></a>
+            <a class="addthis_button_preferred_4"></a>
+            
+            </div>
+            <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4e5ce48d41077802"></script>
+            <!-- AddThis Button END --></div>
+                        {% if shorturl %}
+            <script type="text/javascript"> 
+		var addthis_share = {
+		   templates: { twitter: "{% templatetag openvariable %}title{% templatetag closevariable %} - {{ shorturl }}  @y_arabaci" }
+		}
+	</script>
             {% endif %}
             <hr />
             <div class="abstract">{{ post.abstract }}</div>
