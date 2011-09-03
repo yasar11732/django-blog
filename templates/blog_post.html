@@ -132,21 +132,12 @@
             <div style="margin-top:2px"><!-- AddThis Button BEGIN -->
             <div class="addthis_toolbox addthis_default_style " >
             <a href="http://www.addthis.com/bookmark.php?v=250&amp;pubid=ra-4e5ce48d41077802" class="addthis_button_compact"></a>
-            <a class="addthis_button_preferred_1"></a>
-            <a class="addthis_button_preferred_2"></a>
-            <a class="addthis_button_preferred_3"></a>
-            <a class="addthis_button_preferred_4"></a>
+            <a class="addthis_button_facebook"></a> 
+            <a class="addthis_button_twitter" tw:url="{{ shorturl }}"tw:via="y_arabaci" tw:text="{{ post.title }} - "></a>
             
             </div>
             <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4e5ce48d41077802"></script>
             <!-- AddThis Button END --></div>
-                        {% if shorturl %}
-            <script type="text/javascript"> 
-		var addthis_share = {
-		   templates: { twitter: "{% templatetag openvariable %}title{% templatetag closevariable %} - {{ shorturl }}  @y_arabaci" }
-		}
-	</script>
-            {% endif %}
             <hr />
             <div class="abstract">{{ post.abstract }}</div>
             <div class="post">{{ post.post }}</div>
