@@ -130,14 +130,19 @@
             <div style="font-size:12px"><strong>Yayınlanma Tarihi</strong>: {{ post.pub_date}}, <strong>Son Düzenleme:</strong> {{ post.last_mod }}</div>
 
             <div style="margin-top:2px"><!-- AddThis Button BEGIN -->
-            <div class="addthis_toolbox addthis_default_style " >
-            <a href="http://www.addthis.com/bookmark.php?v=250&amp;pubid=ra-4e5ce48d41077802" class="addthis_button_compact" addthis:url="{{ shorturl }}"></a>
+            <div class="addthis_toolbox addthis_default_style " addthis:url="{{ shorturl }}" >
+            <a href="http://www.addthis.com/bookmark.php?v=250&amp;pubid=ra-4e5ce48d41077802" class="addthis_button_compact"></a>
             <a class="addthis_button_facebook"></a> 
             <a class="addthis_button_twitter" tw:via="y_arabaci" tw:text="{{ post.title }} - "></a>
             
             </div>
             <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4e5ce48d41077802"></script>
             <!-- AddThis Button END --></div>
+            <script type="text/javascript"> 
+                var addthis_share = {
+                templates: { twitter: "{{ post.title }} - {{ shorturl }}  @y_arabaci" }
+                }
+            </script>
             <hr />
             <div class="abstract">{{ post.abstract }}</div>
             <div class="post">{{ post.post }}</div>
