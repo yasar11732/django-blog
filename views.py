@@ -173,24 +173,17 @@ def post(request,slug):
                 'messages' : settings.BLOG_MESSAGES_ENABLED,
                 }
         datas.update(common_data)
-        try:
+        
+        relative_url = str(p.get_absolute_url())
+        abs_url = "%s://%s%s" % (common_data["protocol"],common_data["domain"],relative_url)
 
-            abs_url = "%s://%s%s" % (common_data["protocol"],common_data["domain"],p.get_absolute_url())
-
-            request_line = '{"longUrl" : "' + abs_url + '"}'
-            request = urllib2.Request("https://www.googleapis.com/urlshortener/v1/url",data=request_line,headers={"Content-Type" : "application/json"})
-            socket = urllib2.urlopen(request)
-            response = socket.read()
-            socket.close()
-            jdict = json.loads(response)
-            datas["shorturl"] = jdict["id"]
-        except:
-            import traceback
-            import StringIO
-            
-            
-            mail_admins("url shortage error",traceback.format_exc())
-        mail_admins("your data!",datas)    
+        request_line = '{"longUrl" : "' + abs_url + '"}'
+        req = urllib2.Request("https://www.googleapis.com/urlshortener/v1/url",data=request_line,headers={"Content-Type" : "application/json"})
+        socket = urllib2.urlopen(req)
+        response = socket.read()
+        socket.close()
+        jdict = json.loads(response)
+        datas["shorturl"] = jdict["id"]   
 
         return render_to_response('blog_post.html', datas, context_instance=RequestContext(request))
     else:
