@@ -33,28 +33,8 @@ common_data = {
     'STATIC_URL' : settings.STATIC_URL,
     'protocol' : "http",
     }
-
-def latest_post(request):
-    return Post.objects.filter(yayinlandi=True).latest("pub_date").pub_date
     
-def last_modified(request,slug):
-    try:
-        post = Post.objects.get(slug=slug)
-        return post.last_mod
-    # Doing this instead of 404
-    # in order to not to break suggestions!
-    except Post.DoesNotExist:
-        return None
-    
-def tag_last_modified(request,tag):
-    try:
-        tag = Tag.objects.get(text=Tag)
-    except Tag.DoesNotExist:
-        return None
-    return tag.post_set.filter(yayinlandi=True).latest("pub_date").pub_date
 
-def last_tag(request):
-    return Tag.objects.all().latest("created").created
 
 def handlenotfound(request,suggestions = None):
     global common_data
@@ -109,9 +89,9 @@ def message(request):
     request.session["last_message"] = int(time())
     return HttpResponse("0")
 
-@condition(last_modified_func=latest_post)
+
 @gzip_page
-@cache_page(900)
+@cache_page(3600)
 def homepage(request):
     global common_data
     query_set = Post.objects.filter(yayinlandi=True)
@@ -125,9 +105,9 @@ def homepage(request):
     }
     datas.update(common_data)
     return render_to_response("blog_index.html",datas)
-@condition(last_modified_func=latest_post)
+
 @gzip_page
-@cache_page(900)
+@cache_page(3600)
 def post_index(request):
     global common_data
     datas = {
@@ -146,12 +126,11 @@ def arsiv_index(request):
     }
     datas.update(common_data)
     return render_to_response("blog_arsiv_index.html",datas)
-@condition(last_modified_func=last_modified)
+
 @gzip_page
-@cache_page(900)
+@cache_page(3600)
 def post(request,slug):
     global common_data
-    from django.core.mail import mail_admins
     try:
         p = Post.objects.get(slug=slug)
     except Post.DoesNotExist:
@@ -181,7 +160,6 @@ def post(request,slug):
         req = urllib2.Request("https://www.googleapis.com/urlshortener/v1/url",data=request_line,headers={"Content-Type" : "application/json"})
         socket = urllib2.urlopen(req)
         response = socket.read()
-        mail_admins("api response",response)
         socket.close()
         jdict = json.loads(response)
         datas["shorturl"] = jdict["id"]   
@@ -190,9 +168,9 @@ def post(request,slug):
     else:
         raise Http404
 
-@condition(last_modified_func=tag_last_modified)
+
 @gzip_page
-@cache_page(900)
+@cache_page(3600)
 def tag(request,tag):
     global common_data
     try:
@@ -216,9 +194,9 @@ def tag(request,tag):
     datas.update(common_data)
     return render_to_response('blog_tag.html', datas)
 
-@condition(last_modified_func=last_tag)
+
 @gzip_page
-@cache_page(900)
+@cache_page(3600)
 def tag_index(request):
     datas = {'tags' : Tag.objects.all()}
     datas.update(common_data)
