@@ -8,7 +8,7 @@ from django.views.decorators.http import condition, require_http_methods
 from django.views.decorators.gzip import gzip_page
 from django.views.decorators.cache import cache_page
 from django.shortcuts import render_to_response, get_object_or_404
-from blog.models import Post, Tag, Message
+from blog.models import Post, Tag, Message, ShortUrl
 from django.template import RequestContext, Context, loader
 from django.core.urlresolvers import reverse
 from time import time
@@ -34,7 +34,19 @@ common_data = {
     'protocol' : "http",
     }
     
-
+def getShortUrl(Url):
+    try:
+        return ShortUrl.objects.get(longUrl=Url).shortUrl
+    except:
+        request_line = '{"longUrl" : "' + Url + '"}'
+        req = urllib2.Request("https://www.googleapis.com/urlshortener/v1/url",data=request_line,headers={"Content-Type" : "application/json"})
+        socket = urllib2.urlopen(req)
+        response = socket.read()
+        socket.close()
+        jdict = json.loads(response)
+        a = ShortUrl(longUrl=Url,shortUrl=jdict["id"])
+        a.save()
+        return a.shortUrl
 
 def handlenotfound(request,suggestions = None):
     global common_data
@@ -155,14 +167,8 @@ def post(request,slug):
         
         relative_url = str(p.get_absolute_url())
         abs_url = "%s://%s%s" % (common_data["protocol"],common_data["domain"],relative_url)
-
-        request_line = '{"longUrl" : "' + abs_url + '"}'
-        req = urllib2.Request("https://www.googleapis.com/urlshortener/v1/url",data=request_line,headers={"Content-Type" : "application/json"})
-        socket = urllib2.urlopen(req)
-        response = socket.read()
-        socket.close()
-        jdict = json.loads(response)
-        datas["shorturl"] = jdict["id"]   
+        
+        datas["shorturl"] = getShortUrl(abs_url) 
 
         return render_to_response('blog_post.html', datas, context_instance=RequestContext(request))
     else:

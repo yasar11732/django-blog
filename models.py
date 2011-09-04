@@ -9,6 +9,11 @@ from django.core import urlresolvers
 reverse = lazy(urlresolvers.reverse, str)
 
 
+class ShortUrl(models.Model):
+    longUrl = models.URLField(unique = True)
+    shortUrl = models.URLField(unique = True)
+    
+    
 
 class Tag(models.Model):
     text = models.CharField(max_length=15, unique=True)
