@@ -7,6 +7,12 @@
     <p><strong>{{ month|date:"E"}} ayında yayınlanan makalelerin bir listesi aşağıda, </strong> isterseniz <a href="{% url arsiv_year month.year %}">{{ month.year }}
     yılına ait tüm makaleler</a>e göz atabilirsiniz.
     </p>
+    <div>
+    <span id="oncekiay" style="float:left;visibility:hidden"><a href="{% url arsiv_month month.year previous_month.month %}">Önceki Ay</a></span>
+    {% if next_month %}
+    <span id="sonrakiay" style="float:right;visibility:hidden"><a href="{% url arsiv_month month.year next_month.month %}">Sonraki Ay</a></span>
+    {% endif %}
+    </div>
     {% if makale_list %}
         <ul>
         {% for object in makale_list %}
@@ -16,12 +22,7 @@
     {% else %}
         <p>No objects for you!</p>
     {% endif %}
-    <div>
-    <span id="oncekiay" style="float:left;visibility:hidden"><a href="{% url arsiv_month month.year previous_month.month %}">Önceki Ay</a></span>
-    {% if next_month %}
-    <span id="sonrakiay" style="float:right;visibility:hidden"><a href="{% url arsiv_month month.year next_month.month %}">Sonraki Ay</a></span>
-    {% endif %}
-    </div>
+    
     <script type="text/javascript">
     var onceki = new XMLHttpRequest();
     onceki.open("GET","{% url arsiv_month month.year previous_month.month %}",true);
