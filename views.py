@@ -12,6 +12,7 @@ from blog.models import Post, Tag, Message, ShortUrl
 from django.template import RequestContext, Context, loader
 from django.core.urlresolvers import reverse
 from time import time
+from django.core.mail import mail_admins
 from django.db.models import Count
 import re
 
@@ -98,6 +99,7 @@ def message(request):
         return HttpResponse("2")
     
     mes = Message.objects.create(post=p,message=request.POST['message'],email=email)
+    mail_admins("Yeni mesaj", request.POST["message"])
     request.session["last_message"] = int(time())
     return HttpResponse("0")
 

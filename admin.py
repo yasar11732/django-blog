@@ -45,8 +45,8 @@ class PostAdmin(admin.ModelAdmin):
 
    
 class messageAdmin(admin.ModelAdmin):
-    readonly_fields = ["post","message","email"]
-    fields = ["post","message","email"]
+    readonly_fields = ["post","message","issued_when","email"]
+    fields = ["post","message","issued_when","email"]
     def has_add_permission(*args,**kwargs):
         return False
         

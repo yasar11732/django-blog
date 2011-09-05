@@ -57,6 +57,7 @@ class Message(models.Model):
     post = models.ForeignKey(Post)
     message = models.CharField(max_length=500)
     email = models.EmailField(blank=True)
+    issued_when = models.DateTimeField(auto_now_add=True,blank=True)
     
     def __unicode__(self):
         return self.message
