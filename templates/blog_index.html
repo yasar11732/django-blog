@@ -29,27 +29,25 @@
 {% endblock %}
 
 {% block navigation %}
-<p><strong>Linkler:</strong></p>
-	<ul>
-	<li><a href="{% url rss %}">En son yazılar Rss</a></li>
-    </ul>
     {% if etiket_listesi %}
     <p><strong>Etiketler: </strong></p>
     <ul>
     {% for etiket in etiket_listesi %}
-	<li><a href="{% url tag etiket.slug %}">{{ etiket.text }}[{{ etiket.post_sayisi }}]</a></li>
+	<li><a href="{% url tag etiket.slug %}">{{ etiket.text }} [{{ etiket.post_sayisi }}]</a></li>
     {% endfor %}
     </ul>
     {% endif %}
 
-{% if date_list %}
+
 <p><strong>Arşiv:</strong></p>
-	<ul>
-    {% for date in date_list %}
-	<li><a href="{% url arsiv_year date.year %}">{{ date.year }}</a></li>
-    {% endfor %}
+<ul>
+{% for year, month_dict in date_hierarchy.items %}
+{% for month,post_count in month_dict.items %}
+<li><a href="{% url arsiv_month month.year month.month %}">{{ month|date:"Y E" }} [{{ post_count }}]</a></li>
+{% endfor %}
+{% endfor %}
 </ul>
-{% endif %}
+
 {% endblock %}
 {% block onpageload %}
 <script type="text/javascript">

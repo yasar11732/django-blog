@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from django.db import models
 from datetime import datetime
+
+from django.db import models
 from django.contrib.sitemaps import ping_google
 from django.utils.functional import lazy
 from django.core import urlresolvers
@@ -10,11 +11,11 @@ reverse = lazy(urlresolvers.reverse, str)
 
 
 class ShortUrl(models.Model):
+    "Maps long urls to short urls"
     longUrl = models.URLField(unique = True)
     shortUrl = models.URLField(unique = True)
-    
-    
 
+    
 class Tag(models.Model):
     text = models.CharField(max_length=15, unique=True)
     slug = models.SlugField(blank=True)
@@ -25,6 +26,7 @@ class Tag(models.Model):
         
     def get_absolute_url(self):
         return reverse("tag",args=[self.slug])
+
 
 class Post(models.Model):
     title = models.CharField(max_length=100)
@@ -53,7 +55,9 @@ class Post(models.Model):
             except:
                 pass
 
+
 class Message(models.Model):
+    "Direct messages to admins."
     post = models.ForeignKey(Post)
     message = models.CharField(max_length=500)
     email = models.EmailField(blank=True)

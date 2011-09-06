@@ -14,7 +14,7 @@
     {% endif %}
     </div>
     {% if makale_list %}
-        <ul>
+        <ul style="clear:both">
         {% for object in makale_list %}
             <li><a href="{% url blog.views.post object.slug %}" title="{{ object.title }}">{{ object.title }}</a></li>
         {% endfor %}
@@ -49,8 +49,4 @@
     }
     {% endif %}
     </script>
-{% endblock %}
-
-{% block navigation %}
-<p><a href="{% url blog.views.homepage %}" title="anasayfa">Anasayfa</a></p>
 {% endblock %}

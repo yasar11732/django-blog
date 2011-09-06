@@ -179,11 +179,6 @@
             <div>Blog yorumları <a href="http://disqus.com" class="dsq-brlink"> <span class="logo-disqus">Disqus</span></a> aracıyla sağlanmıştır.</div>
 {% endblock %}
 {% block navigation %}
-<p><strong>Linkler:</strong></p>
-	<ul>
-	<li><a href="{% url blog.views.homepage %}">Anasayfa</a></li>
-	<li><a href="{% url rss %}">En son yazılar Rss</a></li>
-	</ul>
     {% if messages %}
     <p><strong>İletişim: </strong></p>
     <p id="suggest-box-message"></p>

@@ -5,10 +5,11 @@ from datetime import datetime
 from unicodedata import normalize
 from re import sub
 
-# To handle turkish characters better!
-# stolen from: http://gokmengorgen.net/post/detail/djangoda-turkce-destekli-slugify/
 
 def slugify_unicode(value):
+    # To handle dotless i!
+    # stolen from: 
+    # http://gokmengorgen.net/post/detail/djangoda-turkce-destekli-slugify/
     value = value.replace(u'\u0131', 'i')
     value = normalize('NFKD', value).encode('ascii', 'ignore')
     value = unicode(sub('[^\w\s-]', '', value).strip().lower())
@@ -17,8 +18,24 @@ def slugify_unicode(value):
 class PostAdmin(admin.ModelAdmin):
     readonly_fields = ("slug","last_mod","pub_date")
     fieldsets = [
-        (None     , { "fields" : ["title","abstract","post","tags","yayinlandi"]}),
-        ("Details", { "fields" : ["pub_date","last_mod","slug"], "classes" : ["collapse"]})
+        (None     , { 
+            "fields" : [
+                "title",
+                "abstract",
+                "post",
+                "tags",
+                "yayinlandi"
+            ]}
+        ),
+        
+        ("Details", { 
+            "fields" : [
+                "pub_date",
+                "last_mod",
+                "slug"
+            ], 
+            "classes" : ["collapse"]
+            })
     
     ]
     

@@ -13,6 +13,7 @@ reverse = lazy(urlresolvers.reverse, str)
 domain = Site.objects.get(id=settings.SITE_ID).domain
 
 class LatestPosts(Feed):
+    "5 latest posts feed."
     title = u"yasar11732: En Son Yazılar"
     link = reverse("blog.views.homepage")
     description = u"Yeni yazıların güncellemeleri"
@@ -33,7 +34,7 @@ class LatestPosts(Feed):
         return item.pub_date
 
 class TagFeed(Feed):
-
+    "15 latest posts for a given tag."
     def get_object(self,request,tag):
         return get_object_or_404(Tag, slug=tag)
 

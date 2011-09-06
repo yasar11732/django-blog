@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-<strong>{{ tag.text }} ile ilgili yazılar: </strong>
+<div><strong>{{ tag.text }} ile ilgili yazılar: </strong> <a href="{% url tag_rss tag.slug %}"><img src="{{ STATIC_URL }}rss.gif"></a></div>
 {% if latest_posts %}
 				{% autoescape off %}
 				{% for post in latest_posts %}
@@ -20,12 +20,4 @@
 		{% else %}
 			<p>Henüz yayınlanmış birşey yok, ya da veritabanında bir terslik var, daha sonra tekrar bekleriz.</p>
 		{% endif %}
-{% endblock %}
-
-{% block navigation %}
-<p><strong>Linkler:</strong></p>
-	<ul>
-	<li><a href="{% url blog.views.homepage %}">Anasayfa</a></li>
-	<li><a href="{% url tag_rss tag.slug %}">Bu sayfanın Rss'i</a></li>
-</ul>
 {% endblock %}

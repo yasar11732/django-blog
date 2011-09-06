@@ -34,12 +34,13 @@ document.location = "{% url blog.views.homepage %}"
 </script>
 </head>
 <body>
+<a href="{% url rss %}"><img src="{{ STATIC_URL }}rss.png" style="position:fixed;right:0px;bottom:0px;"/></a>
 <div id="container">
     <div id="header" onclick="document.location = '{% url blog.views.homepage %}'" style="cursor:pointer">
 		{% block header %}
         <div style="float:right"><div class="g-plusone"></div></div>
-			<h1>{{ blog_name }}</h1>
-			<h4>{{ slogan }}</h4>
+			<a href="/" title="{{ blog_name}} : {{ slogan }}"><img src="{{ STATIC_URL }}header_img.png" /></a>
+            
         {% endblock %}
 	</div>
   <div id="wrapper">
@@ -51,15 +52,10 @@ document.location = "{% url blog.views.homepage %}"
     </div>
   </div>
   <div class="navigation">
-    <p><strong>Google Araması: </strong></p>
     <form method="post" action="#" onsubmit="search();return false;">
-    <input type="text" id="searchbox" />
+    <input type="text" id="searchbox" style="width:90%;background:url('{{ STATIC_URL }}btn_search.gif') no-repeat;padding-left:22px;border:1px solid grey"/>
     </form>
     {% block navigation %}
-	<p><strong>Linkler:</strong></p>
-	<ul>
-	<li><a href="/">Anasayfa</a></li>
-	</ul>
 	{% endblock %}
   </div>
   <div id="extra">
