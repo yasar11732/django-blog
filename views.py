@@ -105,7 +105,6 @@ def message(request):
 
 
 @gzip_page
-@cache_page(3600)
 def homepage(request):
     global common_data
     query_set = Post.objects.filter(yayinlandi=True)
@@ -142,7 +141,6 @@ def arsiv_index(request):
     return render_to_response("blog_arsiv_index.html",datas)
 
 @gzip_page
-@cache_page(3600)
 def post(request,slug):
     global common_data
     try:
