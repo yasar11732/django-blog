@@ -59,7 +59,12 @@ document.location = "{% url blog.views.homepage %}"
 	{% endblock %}
   </div>
   <div id="extra">
-    {% block extra %}
+      {% block extra %}
+      <p><strong>Blogroll:</strong></p>
+      <ul>
+          <li><a href="http://blog.tanshaydar.com" title="Tanshaydar'ın mekanı">
+             Tanshaydar </a></li>
+      </ul>
 	{% endblock %}
   </div>
   <div class="navigation">
