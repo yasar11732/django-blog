@@ -16,11 +16,6 @@ django projenizin içerisine "cd" ile gelin
 git clone git://github.com/yasar11732/django-blog.git blog
 
 settings.py içerisindeki INSTALLED_APPS değişkenine 'blog' ekleyin
-settings.py içerisinde şu değişkenleri tanımlayın:
-
-BLOG_TITLE = u"yasar11732"
-BLOG_SLOGAN = u"Linux ve Python hakkında makaleler ve kısa ipuçları"
-BLOG_MESSAGES_ENABLED = True
 
 ana url config dosyanıza url'leri dahil edin:
 
@@ -34,4 +29,4 @@ proje kök dizinindeyken şu iki komutu verin:
 python manage.py syncdb
 python manage.py collectstatic
 
-Şu anda blog linkinizi ziyaret ederseniz bir hata alacaksınız. Bir yazı girdiğinizde bu hata ortadan kalkacaktır.
+Blog kullanıma hazır

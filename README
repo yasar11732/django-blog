@@ -13,13 +13,8 @@ INSTALLATION (with git)
 cd into your django project
 git clone git://github.com/yasar11732/django-blog.git blog
 add blog into your INSTALLED_APPLICATIONS
-define these in settings module.
-
-BLOG_TITLE = u"yasar11732"
-BLOG_SLOGAN = u"Linux ve Python hakkında makaleler ve kısa ipuçları"
-BLOG_MESSAGES_ENABLED = True
 
 include blog.urls in your root url config.
 syncdb and collecstatic
 
-At this point, you will get an error on main blog url, since you don't have a post yet, create a initial post from admin site.
+You should be ready to use your blog.
