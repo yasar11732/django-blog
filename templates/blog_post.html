@@ -151,7 +151,7 @@
             <hr />
             <div class="abstract">{{ post.abstract }}</div>
             <div class="post">{{ post.post }}</div>
-            <div style="font-size:12px"><strong>Yayınlanma Tarihi</strong>: {{ post.pub_date}}, <strong>Son Düzenleme:</strong> {{ post.last_mod }}</div>
+            <div style="font-size:60%;"><strong>Yayınlanma Tarihi</strong>: {{ post.pub_date}}, <strong>Son Düzenleme:</strong> {{ post.last_mod }}</div>
             <div class="tags"> Etiketler : 
                 {% for tag in tags %}
                 <span class="tag"> <a href="{% url blog.views.tag tag.slug %}" class="tag">{{ tag.text }}</a>, </span>

@@ -14,8 +14,9 @@
 				{% autoescape off %}
 				{% for post,tags in latest %}
 				<div style="margin-top:2px;border-bottom:2px solid grey">
-					<h4 onclick="document.location = '{% url post post.slug %}'" style="cursor:pointer">{{ post.title }}</h4>
-                    <div><strong>Yayınlanma Tarihi</strong>: {{ post.pub_date}}, <strong>Son Düzenleme:</strong> {{ post.last_mod }}</div>
+					<h2 onclick="document.location = '{% url post post.slug %}'"
+                                            style="padding-bottom:0px;margin-bottom:0px;cursor:pointer">{{ post.title }}</h2>
+                    <div style="margin-bottom:4px;font-size:60%"><strong>Yayınlanma Tarihi</strong>: {{ post.pub_date}}, <strong>Son Düzenleme:</strong> {{ post.last_mod }}</div>
 					<div>{{ post.abstract }}</div>
 
                     <p style="font-size:11px;"><a style="color:red" href="{{ protocol}}://{{ domain }}{% url post post.slug %}#disqus_thread">[Gerisini  oku...]</a><strong> Etikeler:</strong>{% for tag in tags%}<a href="{% url tag tag.slug %}">{{ tag.text }}</a>, {% endfor %}</p>
